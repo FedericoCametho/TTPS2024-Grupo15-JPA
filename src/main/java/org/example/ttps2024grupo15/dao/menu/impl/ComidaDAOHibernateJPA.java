@@ -23,6 +23,6 @@ public class ComidaDAOHibernateJPA extends GenericDAOHibernateJPA<Comida> implem
     @Override
     public List<Comida> findByPrecio(Double precio) {
         return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT c FROM Comida c WHERE c.nombre = :precio").setParameter("precio",precio).getResultList();
+                .createQuery("SELECT c FROM Comida c WHERE c.precio = :precio").setParameter("precio",precio).getResultList();
     }
 }
