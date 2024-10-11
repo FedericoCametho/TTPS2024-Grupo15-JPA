@@ -18,7 +18,7 @@ public class MenuService {
     }
 
     @Transactional
-    public Menu saveMenu(MenuRequest menuRequest) {
+    public Menu save(MenuRequest menuRequest) {
         this.sanitizeMenuRequest(menuRequest);
         Menu menu = new Menu(menuRequest.getNombre(), menuRequest.getPrecio(), menuRequest.getComidas(), menuRequest.getImagen());
         try{
@@ -52,7 +52,7 @@ public class MenuService {
         }
     }
     @Transactional
-    public void deleteMenu(Long id) {
+    public void delete(Long id) {
         menuDAO.delete(id);
     }
 

@@ -8,37 +8,78 @@ import org.example.ttps2024grupo15.model.usuario.Alumno;
 
 import java.util.List;
 
-public class AlumnoService {
+public class AlumnoService implements UsuarioService<Alumno>{
     private AlumnoDAO alumnoDAO;
     public AlumnoService(AlumnoDAO alumnoDAO) {
         this.alumnoDAO = alumnoDAO;
     }
 
     @Transactional
-    public Alumno saveAlumno(AlumnoRequest alumnoRequest) {
+    public Alumno save(AlumnoRequest alumnoRequest) {
         this.sanitizeAlumnoRequest(alumnoRequest);
-        Alumno alumno = new Alumno(alumnoRequest.getDni(),alumnoRequest.getNombre(), alumnoRequest.getApellido(), alumnoRequest.getEmail());
+        Alumno alumno = new Alumno(alumnoRequest.getDni(), alumnoRequest.getEmail(),alumnoRequest.getNombre(), alumnoRequest.getApellido());
         return alumnoDAO.save(alumno);
     }
 
-    public Alumno getAlumnoById(Long id) {
+    @Transactional
+    public Alumno update(Long idAlumno, AlumnoRequest alumnoRequest){
+        this.sanitizeAlumnoRequest(alumnoRequest);
+        Alumno alumno = this.getUserById(idAlumno);
+        alumno.setNombre(alumnoRequest.getNombre());
+        alumno.setApellido(alumnoRequest.getApellido());
+        alumno.setEmail(alumnoRequest.getEmail());
+        alumno.setDni(alumnoRequest.getDni());
+        alumno.setFotoDePerfil(alumnoRequest.getFotoDePerfil());
+        return alumnoDAO.update(alumno);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        alumnoDAO.delete(id);
+    }
+    @Transactional
+    public void delete(Alumno alumno) {
+        alumnoDAO.delete(alumno);
+    }
+
+    @Override
+    public List<Alumno> getUserByRol() {
+        return alumnoDAO.getUsuariosPorRol(Rol.ALUMNO);
+    }
+
+    @Override
+    public Alumno getUserById(Long id) {
         return alumnoDAO.getById(id);
     }
-    public Alumno getAlumnoByEmail(String email) {
+
+    @Override
+    public List<Alumno> getUsersByName(String name) {
+        return alumnoDAO.getUsuarioPorNombre(name);
+    }
+
+    @Override
+    public List<Alumno> getUsersByLastName(String lastName) {
+        return alumnoDAO.getUsuarioPorApellido(lastName);
+    }
+
+    @Override
+    public List<Alumno> getUsersByEnabled() {
+        return alumnoDAO.getByHabilitado();
+    }
+
+    @Override
+    public Alumno getUserByEmail(String email) {
         return alumnoDAO.getByEmail(email);
     }
-    public Alumno getAlumnoByNombre(String nombre) {
-        return alumnoDAO.getUsuarioPorNombre(nombre).get(0);
+
+    public List<Alumno> getAlumnosPorRol() {
+        return alumnoDAO.getUsuariosPorRol(Rol.ALUMNO);
     }
-    public Alumno getAlumnoByApellido(String apellido) {
-        return alumnoDAO.getUsuarioPorApellido(apellido).get(0);
-    }
-    public List<Alumno> getAlumnos() {
+
+    public List<Alumno> getAll(){
         return alumnoDAO.getAll();
     }
-    public List<Alumno> getAlumnosPorRol(Rol rol) {
-        return alumnoDAO.getUsuariosPorRol(rol);
-    }
+
     private void sanitizeAlumnoRequest(AlumnoRequest alumnoRequest) {
         if(alumnoRequest.getNombre() == null || alumnoRequest.getNombre().isEmpty()){
             throw new IllegalArgumentException("El nombre del alumno no puede ser nulo o vacio");
@@ -53,4 +94,6 @@ public class AlumnoService {
             throw new IllegalArgumentException("El dni del alumno no puede ser nulo");
         }
     }
+
+
 }

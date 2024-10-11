@@ -43,7 +43,7 @@ public class MenuDAOTest {
     @MethodSource("createMenuRequestWithData")
     @Order(2)
     public void testCreateMenu(MenuRequest menuRequest) {
-        Menu menu = this.menuService.saveMenu(menuRequest);
+        Menu menu = this.menuService.save(menuRequest);
         this.testQueryAndValidateMenuById(menu.getId(), menuRequest);
     }
     private void testQueryAndValidateMenuById(Long id, MenuRequest menuRequest) {
@@ -108,10 +108,10 @@ public class MenuDAOTest {
         List<Menu> menues = this.menuService.getAllMenues();
         List<Comida> comidas = menues.stream().flatMap(menu -> menu.getComidas().stream()).collect(Collectors.toList());
         for(Comida comida : comidas){
-            this.comidaService.deleteComida(comida);
+            this.comidaService.delete(comida);
         }
         for(Menu menu : menues){
-            this.menuService.deleteMenu(menu.getId());
+            this.menuService.delete(menu.getId());
         }
         assertEquals(0, this.menuService.getAllMenues().size());
     }
@@ -144,7 +144,7 @@ public class MenuDAOTest {
     @MethodSource("createComidaRequestWithData")
     @Order(1)
     public void createComidas(ComidaRequest comidaRequest) {
-        this.comidaService.saveComida(comidaRequest);
+        this.comidaService.save(comidaRequest);
     }
     private Stream<Arguments> createComidaRequestWithData() {
         return Stream.of(
