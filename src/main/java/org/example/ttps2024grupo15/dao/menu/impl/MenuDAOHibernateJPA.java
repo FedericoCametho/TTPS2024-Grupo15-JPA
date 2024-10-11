@@ -70,7 +70,7 @@ public class MenuDAOHibernateJPA  extends GenericDAOHibernateJPA<Menu> implement
     public List<Menu> findByPrecio(Double precio) {
         EntityManager em = EMF.getEMF().createEntityManager();
         try{
-            return em.createQuery("SELECT m FROM Menu m WHERE m.nombre = :precio").setParameter("precio",precio).getResultList();
+            return em.createQuery("SELECT m FROM Menu m WHERE m.precio = :precio").setParameter("precio",precio).getResultList();
         }catch(Exception e){
             e.printStackTrace();
             throw e;

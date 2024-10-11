@@ -7,6 +7,7 @@ import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.request.menu.MenuRequest;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MenuService {
     private MenuDAO menuDAO;
@@ -23,10 +24,10 @@ public class MenuService {
         return menuDAO.getAll();
     }
 
-    public List<Menu> getMenusByNombre(String nombre) {
+    public List<Menu> getMenuesByNombre(String nombre) {
         return menuDAO.findByNombre(nombre);
     }
-    public List<Menu> getMenusByPrecio(Double precio) {
+    public List<Menu> getMenuesByPrecio(Double precio) {
         return menuDAO.findByPrecio(precio);
     }
     @Transactional
@@ -36,6 +37,27 @@ public class MenuService {
         try{
             Menu result = menuDAO.save(menu);
             this.updateComidasEnMenuRelation(menu.getComidas(), result);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    @Transactional
+    public Menu update(Long idMenu, MenuRequest menuRequest){
+        this.sanitizeMenuRequest(menuRequest);
+        Menu menu = this.getMenuById(idMenu);
+        menu.setNombre(menuRequest.getNombre());
+        menu.setPrecio(menuRequest.getPrecio());
+        menu.setFoto(menuRequest.getImagen());
+        try{
+            Menu result = menuDAO.update(menu);
+            List<Long> idComidasMenu = menu.getComidas().stream().mapToLong(Comida::getId).boxed().collect(Collectors.toList());
+            List<Comida> comidasToUpdate = menuRequest.getComidas().stream().filter(comida -> !idComidasMenu.contains(comida.getId())).collect(Collectors.toList());
+            if(!comidasToUpdate.isEmpty()){
+                this.updateComidasEnMenuRelation(menu.getComidas(), result);
+            }
             return result;
         }catch (Exception e){
             e.printStackTrace();

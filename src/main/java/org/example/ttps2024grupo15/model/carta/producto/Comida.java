@@ -79,11 +79,18 @@ public class Comida extends ProductoComercializable{
         return enMenu;
     }
     public void setComidaInMenu(Menu menu){
-        this.menues.add(menu);
-        this.enMenu = true;
+        if(!this.isInMenu(menu)){
+            this.menues.add(menu);
+            this.enMenu = true;
+        }
     }
     public void removeComidaFromMenu(Menu menu){
-        this.menues.remove(menu);
-        this.enMenu = !this.menues.isEmpty();
+        if(this.isInMenu(menu)){
+            this.menues.remove(menu);
+            this.enMenu = !this.menues.isEmpty();
+        }
+    }
+    public boolean isInMenu(Menu menu){
+        return this.menues.contains(menu);
     }
 }

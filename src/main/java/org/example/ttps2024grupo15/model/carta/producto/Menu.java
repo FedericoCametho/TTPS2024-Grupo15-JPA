@@ -51,4 +51,8 @@ public class Menu extends ProductoComercializable {
         this.compras = compras;
     }
 
+    public boolean hasComida(Comida comida){
+        return this.comidas.contains(comida);
+    }
+
 }

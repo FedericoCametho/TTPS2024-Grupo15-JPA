@@ -84,9 +84,20 @@ public class ComidaDAOTest {
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
     }
-
     @Test
     @Order(6)
+    public void updateComida(){
+        Comida comidaToUpdate = this.comidaService.getComidasByNombre("Milanesa").get(0);
+        Comida comidaPostUpdate = this.comidaService.update(comidaToUpdate.getId(), this.createComidaRequest("Milanesa", 3000.0, TipoComida.PLATO_PRINCIPAL));
+        assertNotNull(comidaPostUpdate);
+        assertEquals(comidaToUpdate.getId(), comidaPostUpdate.getId());
+        assertEquals(comidaToUpdate.getNombre(), comidaPostUpdate.getNombre());
+        assertEquals(3000.0, comidaPostUpdate.getPrecio());
+        assertEquals(comidaToUpdate.getTipoComida(), comidaPostUpdate.getTipoComida());
+    }
+
+    @Test
+    @Order(7)
     public void testDeleteComidaById() {
         List<Comida> comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
@@ -98,7 +109,7 @@ public class ComidaDAOTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void testDeleteComida(){
         List<Comida> comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
@@ -108,8 +119,7 @@ public class ComidaDAOTest {
         assertNotNull(comidas);
         assertEquals(1, comidas.size());
     }
-    @Test
-    @Order(8)
+    @AfterAll
     public void deleteAllComidas(){
         List<Comida> comidas = this.comidaService.getComidas();
         for(Comida comida : comidas){
