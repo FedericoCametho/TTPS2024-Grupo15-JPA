@@ -12,13 +12,13 @@ import java.util.List;
 
 @Entity
 public class Alumno extends Usuario {
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario")
     private List<Compra> compras;
     private Boolean habilitado;
     @Lob
     private byte[] fotoDePerfil;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario")
     private List<Sugerencia> sugerencias;
 
 

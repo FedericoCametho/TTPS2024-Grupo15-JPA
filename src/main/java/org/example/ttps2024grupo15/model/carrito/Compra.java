@@ -20,14 +20,14 @@ public class Compra {
     @ManyToOne
     @JoinColumn(name = "alumno_id")
     private Alumno usuario;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "compra_menu",
             joinColumns = @JoinColumn(name = "compra_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id")
     )
     private List<Menu> menues;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany( fetch = FetchType.EAGER)
     @JoinTable(
             name = "compra_comida",
             joinColumns = @JoinColumn(name = "compra_id"),

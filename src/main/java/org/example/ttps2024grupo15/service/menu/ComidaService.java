@@ -3,6 +3,7 @@ package org.example.ttps2024grupo15.service.menu;
 import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.dao.menu.ComidaDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
+import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.request.menu.ComidaRequest;
 
 import java.util.List;
@@ -34,6 +35,13 @@ public class ComidaService {
         this.sanitizeComidaRequest(comidaRequest);
         Comida comida = new Comida(comidaRequest.getNombre(), comidaRequest.getTipoComida(), comidaRequest.getPrecio());
         return comidaDAO.save(comida);
+    }
+
+    @Transactional
+    public Comida updateComidaMenuRelation(Menu menu, Long comidaId){
+        Comida comida = this.getComidaById(comidaId);
+        comida.setComidaInMenu(menu);
+        return comidaDAO.update(comida);
     }
     @Transactional
     public void deleteComida(Long id) {
