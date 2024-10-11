@@ -38,6 +38,15 @@ public class ComidaService {
     }
 
     @Transactional
+    public Comida update(Long idComida, ComidaRequest comidaRequest){
+        this.sanitizeComidaRequest(comidaRequest);
+        Comida comida = this.getComidaById(idComida);
+        comida.setNombre(comidaRequest.getNombre());
+        comida.setPrecio(comidaRequest.getPrecio());
+        comida.setTipoComida(comidaRequest.getTipoComida());
+        return comidaDAO.update(comida);
+    }
+    @Transactional
     public Comida updateComidaMenuRelation(Menu menu, Long comidaId){
         Comida comida = this.getComidaById(comidaId);
         comida.setComidaInMenu(menu);

@@ -62,8 +62,48 @@ public class MenuDAOTest {
         assertNotNull(menus);
         assertEquals(2, menus.size());
     }
+
     @Test
     @Order(4)
+    public void testGetByNombre() {
+        List<Menu> menus = this.menuService.getMenuesByNombre("No existe");
+        assertNotNull(menus);
+        assertEquals(0, menus.size());
+
+        menus = this.menuService.getMenuesByNombre("Menu Lunes Comun");
+        assertNotNull(menus);
+        assertEquals(1, menus.size());
+        Menu menu = menus.get(0);
+        assertEquals("Menu Lunes Comun", menu.getNombre());
+        assertEquals(4500.0, menu.getPrecio());
+        assertEquals(3, menu.getComidas().size());
+    }
+
+    @Test
+    @Order(5)
+    public void testUpdateMenu(){
+        List<Menu> menus = this.menuService.getMenuesByNombre("Menu Lunes Comun");
+        assertNotNull(menus);
+        assertEquals(1, menus.size());
+        Menu menu = menus.get(0);
+        MenuRequest menuRequestUpdate = this.createMenuRequest(menu.getNombre(), 3500.0,menu.getComidas());
+        this.menuService.update(menu.getId(), menuRequestUpdate);
+        this.testQueryAndValidateMenuById(menu.getId(), menuRequestUpdate);
+    }
+
+    @Test
+    @Order(6)
+    public void testGetByPrecio() {
+        List<Menu> menus = this.menuService.getMenuesByPrecio(Double.valueOf("0.00"));
+        assertNotNull(menus);
+        assertEquals(0, menus.size());
+
+        menus = this.menuService.getMenuesByPrecio(Double.valueOf("3500.00"));
+        assertNotNull(menus);
+        assertEquals(2, menus.size());
+    }
+    @Test
+    @Order(7)
     public void testDeleteAllMenuOk(){
         List<Menu> menues = this.menuService.getAllMenues();
         List<Comida> comidas = menues.stream().flatMap(menu -> menu.getComidas().stream()).collect(Collectors.toList());
