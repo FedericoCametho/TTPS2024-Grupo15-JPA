@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao;
+package org.example.ttps2024grupo15.dao.producto;
 
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
