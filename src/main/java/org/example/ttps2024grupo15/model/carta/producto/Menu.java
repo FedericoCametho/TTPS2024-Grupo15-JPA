@@ -10,15 +10,16 @@ import java.util.List;
 public class Menu extends ProductoComercializable {
     @Lob
     private byte[] foto;
-    @ManyToMany(mappedBy = "menues", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "menues", fetch = FetchType.EAGER)
     private List<Comida> comidas;
-    @ManyToMany(mappedBy = "menues", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "menues",fetch = FetchType.EAGER)
     private List<Compra> compras;
 
-    public Menu(String titulo, List<Comida> comidas, Double precio) {
+    public Menu(String titulo, Double precio, List<Comida> comidas,byte[] foto) {
         this.nombre = titulo;
         this.precio = precio;
         this.comidas = comidas;
+        this.foto = foto;
     }
 
     public Menu() {
@@ -49,4 +50,5 @@ public class Menu extends ProductoComercializable {
     public void setCompras(List<Compra> compras) {
         this.compras = compras;
     }
+
 }

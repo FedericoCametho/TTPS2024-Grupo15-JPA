@@ -12,14 +12,14 @@ public class Comida extends ProductoComercializable{
     private TipoComida tipoComida;
     @Lob
     private byte[] foto;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "comida_menu",
             joinColumns = @JoinColumn(name = "comida_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id")
     )
     private List<Menu> menues;
-    @ManyToMany(mappedBy = "comidas", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "comidas", fetch = FetchType.EAGER)
     private List<Compra> compras;
     private Boolean enMenu;
 
@@ -77,5 +77,13 @@ public class Comida extends ProductoComercializable{
 
     public Boolean getEnMenu() {
         return enMenu;
+    }
+    public void setComidaInMenu(Menu menu){
+        this.menues.add(menu);
+        this.enMenu = true;
+    }
+    public void removeComidaFromMenu(Menu menu){
+        this.menues.remove(menu);
+        this.enMenu = !this.menues.isEmpty();
     }
 }

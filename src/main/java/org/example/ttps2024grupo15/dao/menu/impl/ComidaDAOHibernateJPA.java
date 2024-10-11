@@ -1,5 +1,6 @@
 package org.example.ttps2024grupo15.dao.menu.impl;
 
+import jakarta.persistence.EntityManager;
 import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
 import org.example.ttps2024grupo15.dao.menu.ComidaDAO;
@@ -16,13 +17,27 @@ public class ComidaDAOHibernateJPA extends GenericDAOHibernateJPA<Comida> implem
 
     @Override
     public List<Comida> findByNombre(String nombre) {
-        return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT c FROM Comida c WHERE c.nombre = :nombre").setParameter("nombre",nombre).getResultList();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT c FROM Comida c WHERE c.nombre = :nombre").setParameter("nombre",nombre).getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }finally {
+            em.close();
+        }
     }
 
     @Override
     public List<Comida> findByPrecio(Double precio) {
-        return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT c FROM Comida c WHERE c.precio = :precio").setParameter("precio",precio).getResultList();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT c FROM Comida c WHERE c.precio = :precio").setParameter("precio",precio).getResultList();
+        } catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 }
