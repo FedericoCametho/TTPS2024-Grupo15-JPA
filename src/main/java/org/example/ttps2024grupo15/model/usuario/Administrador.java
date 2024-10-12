@@ -9,7 +9,6 @@ public class Administrador extends Usuario {
         super(dni, email, nombre, apellido, Rol.ADMINISTRADOR);
     }
 
-
     public Administrador() {
 
     }
