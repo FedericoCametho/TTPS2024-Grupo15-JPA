@@ -17,21 +17,8 @@ public class MenuService {
         this.comidaService = comidaService;
     }
 
-    public Menu getMenuById(Long id) {
-        return menuDAO.getById(id);
-    }
-    public List<Menu> getAllMenues() {
-        return menuDAO.getAll();
-    }
-
-    public List<Menu> getMenuesByNombre(String nombre) {
-        return menuDAO.findByNombre(nombre);
-    }
-    public List<Menu> getMenuesByPrecio(Double precio) {
-        return menuDAO.findByPrecio(precio);
-    }
     @Transactional
-    public Menu saveMenu(MenuRequest menuRequest) {
+    public Menu save(MenuRequest menuRequest) {
         this.sanitizeMenuRequest(menuRequest);
         Menu menu = new Menu(menuRequest.getNombre(), menuRequest.getPrecio(), menuRequest.getComidas(), menuRequest.getImagen());
         try{
@@ -65,8 +52,22 @@ public class MenuService {
         }
     }
     @Transactional
-    public void deleteMenu(Long id) {
+    public void delete(Long id) {
         menuDAO.delete(id);
+    }
+
+    public Menu getMenuById(Long id) {
+        return menuDAO.getById(id);
+    }
+    public List<Menu> getAllMenues() {
+        return menuDAO.getAll();
+    }
+
+    public List<Menu> getMenuesByNombre(String nombre) {
+        return menuDAO.findByNombre(nombre);
+    }
+    public List<Menu> getMenuesByPrecio(Double precio) {
+        return menuDAO.findByPrecio(precio);
     }
 
     private void sanitizeMenuRequest(MenuRequest menuRequest){

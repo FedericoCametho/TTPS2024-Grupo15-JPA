@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao;
+package org.example.ttps2024grupo15.dao.producto;
 
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
@@ -33,7 +33,7 @@ public class ComidaDAOTest {
     @MethodSource("createComidaRequestWithData")
     @Order(1)
     public void testCreateComida(ComidaRequest comidaRequest) {
-        Comida comida = this.comidaService.saveComida(comidaRequest);
+        Comida comida = this.comidaService.save(comidaRequest);
         this.testQueryAndValidateComidaById(comida.getId(), comidaRequest);
     }
 
@@ -102,7 +102,7 @@ public class ComidaDAOTest {
         List<Comida> comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(3, comidas.size());
-        this.comidaService.deleteComida(comidas.get(0).getId());
+        this.comidaService.delete(comidas.get(0).getId());
         comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
@@ -114,7 +114,8 @@ public class ComidaDAOTest {
         List<Comida> comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
-        this.comidaService.deleteComida(comidas.get(0));
+        Comida comidaToDelete = comidas.get(0);
+        this.comidaService.delete(comidaToDelete.getId());
         comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(1, comidas.size());
@@ -122,9 +123,7 @@ public class ComidaDAOTest {
     @AfterAll
     public void deleteAllComidas(){
         List<Comida> comidas = this.comidaService.getComidas();
-        for(Comida comida : comidas){
-            this.comidaService.deleteComida(comida);
-        }
+        comidas.forEach(comida -> this.comidaService.delete(comida.getId()));
         comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(0, comidas.size());

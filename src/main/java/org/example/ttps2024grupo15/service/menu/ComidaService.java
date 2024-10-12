@@ -14,24 +14,8 @@ public class ComidaService {
         this.comidaDAO = comidaDAO;
     }
 
-    public Comida getComidaById(Long id) {
-        return comidaDAO.getById(id);
-    }
-
-    public List<Comida> getComidas() {
-        return comidaDAO.getAll();
-    }
-    public List<Comida> getComidasByNombre(String nombre) {
-        return comidaDAO.findByNombre(nombre);
-    }
-
-    public List<Comida> getComidasByPrecio(Double precio) {
-        return comidaDAO.findByPrecio(precio);
-    }
-
-
     @Transactional
-    public Comida saveComida(ComidaRequest comidaRequest) {
+    public Comida save(ComidaRequest comidaRequest) {
         this.sanitizeComidaRequest(comidaRequest);
         Comida comida = new Comida(comidaRequest.getNombre(), comidaRequest.getTipoComida(), comidaRequest.getPrecio());
         return comidaDAO.save(comida);
@@ -53,12 +37,27 @@ public class ComidaService {
         return comidaDAO.update(comida);
     }
     @Transactional
-    public void deleteComida(Long id) {
+    public void delete(Long id) {
         comidaDAO.delete(id);
     }
     @Transactional
-    public void deleteComida(Comida comida) {
+    public void delete(Comida comida) {
         comidaDAO.delete(comida);
+    }
+
+    public Comida getComidaById(Long id) {
+        return comidaDAO.getById(id);
+    }
+
+    public List<Comida> getComidas() {
+        return comidaDAO.getAll();
+    }
+    public List<Comida> getComidasByNombre(String nombre) {
+        return comidaDAO.findByNombre(nombre);
+    }
+
+    public List<Comida> getComidasByPrecio(Double precio) {
+        return comidaDAO.findByPrecio(precio);
     }
 
     private void sanitizeComidaRequest(ComidaRequest comidaRequest){

@@ -19,7 +19,7 @@ public class ComidaDAOHibernateJPA extends GenericDAOHibernateJPA<Comida> implem
     public List<Comida> findByNombre(String nombre) {
         EntityManager em = EMF.getEMF().createEntityManager();
         try{
-            return em.createQuery("SELECT c FROM Comida c WHERE c.nombre = :nombre").setParameter("nombre",nombre).getResultList();
+            return em.createQuery("SELECT c FROM Comida c WHERE c.nombre LIKE :nombre").setParameter("nombre","%"+nombre+"%").getResultList();
         }catch (Exception e){
             e.printStackTrace();
             throw e;

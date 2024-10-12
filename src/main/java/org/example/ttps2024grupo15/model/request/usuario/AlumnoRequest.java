@@ -5,51 +5,28 @@ import jakarta.persistence.Lob;
 
 import java.util.List;
 
-public class AlumnoRequest {
+public class AlumnoRequest extends UsuarioRequest {
+    private byte[] foto;
+    private boolean habilitado;
 
-    private Integer dni;
-    private String email;
-    private String nombre;
-    private String apellido;
-    private byte[] fotoDePerfil;
-
-    public Integer getDni() {
-        return dni;
+    public AlumnoRequest() {
+        super();
     }
 
-    public void setDni(Integer dni) {
-        this.dni = dni;
+
+    public byte[] getFoto() {
+        return foto;
     }
 
-    public String getEmail() {
-        return email;
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public boolean isHabilitado() {
+        return habilitado;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public byte[] getFotoDePerfil() {
-        return fotoDePerfil;
-    }
-
-    public void setFotoDePerfil(byte[] fotoDePerfil) {
-        this.fotoDePerfil = fotoDePerfil;
+    public void setHabilitado(boolean habilitado) {
+        this.habilitado = habilitado;
     }
 }
