@@ -32,13 +32,13 @@ public class AlumnoDAOHibernateJPA extends GenericDAOHibernateJPA<Alumno> implem
     @Override
     public List<Alumno> getUsuarioPorNombre(String nombre) {
         return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT a FROM Alumno a WHERE a.nombre LIKE %:nombre%").setParameter("nombre", nombre).getResultList();
+                .createQuery("SELECT a FROM Alumno a WHERE a.nombre LIKE :nombre").setParameter("nombre", "%"+nombre+"%").getResultList();
     }
 
     @Override
     public List<Alumno> getUsuarioPorApellido(String apellido) {
         return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT a FROM Alumno a WHERE a.nombre LIKE %:apellido%").setParameter("apellido", apellido).getResultList();
+                .createQuery("SELECT a FROM Alumno a WHERE a.apellido LIKE :apellido").setParameter("apellido", "%"+apellido+"%").getResultList();
     }
 
     @Override

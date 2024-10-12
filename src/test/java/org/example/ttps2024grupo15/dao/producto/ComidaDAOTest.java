@@ -114,7 +114,8 @@ public class ComidaDAOTest {
         List<Comida> comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
-        this.comidaService.delete(comidas.get(0));
+        Comida comidaToDelete = comidas.get(0);
+        this.comidaService.delete(comidaToDelete.getId());
         comidas = this.comidaService.getComidas();
         assertNotNull(comidas);
         assertEquals(1, comidas.size());

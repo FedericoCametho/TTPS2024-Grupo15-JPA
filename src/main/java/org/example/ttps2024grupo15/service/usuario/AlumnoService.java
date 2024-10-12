@@ -29,7 +29,8 @@ public class AlumnoService implements UsuarioService<Alumno>{
         alumno.setApellido(alumnoRequest.getApellido());
         alumno.setEmail(alumnoRequest.getEmail());
         alumno.setDni(alumnoRequest.getDni());
-        alumno.setFotoDePerfil(alumnoRequest.getFotoDePerfil());
+        alumno.setFotoDePerfil(alumnoRequest.getFoto());
+        this.validarHabilitado(alumno, alumnoRequest.isHabilitado());
         return alumnoDAO.update(alumno);
     }
 
@@ -95,5 +96,12 @@ public class AlumnoService implements UsuarioService<Alumno>{
         }
     }
 
+    private void validarHabilitado(Alumno alumno, boolean nuevoEstado){
+        if(nuevoEstado){
+            alumno.habilitar();
+        } else {
+            alumno.deshabilitar();
+        }
+    }
 
 }

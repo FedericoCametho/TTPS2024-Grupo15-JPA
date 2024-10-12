@@ -57,7 +57,7 @@ public class MenuDAOHibernateJPA  extends GenericDAOHibernateJPA<Menu> implement
     public List<Menu> findByNombre(String nombre) {
         EntityManager em = EMF.getEMF().createEntityManager();
         try{
-            return em.createQuery("SELECT m FROM Menu m WHERE m.nombre = :nombre").setParameter("nombre",nombre).getResultList();
+            return em.createQuery("SELECT m FROM Menu m WHERE m.nombre LIKE :nombre").setParameter("nombre","%"+nombre+"%").getResultList();
         }catch (Exception e){
             e.printStackTrace();
             throw e;
