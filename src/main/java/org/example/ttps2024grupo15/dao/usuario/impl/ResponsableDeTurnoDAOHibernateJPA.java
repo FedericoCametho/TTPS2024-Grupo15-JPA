@@ -16,7 +16,7 @@ public class ResponsableDeTurnoDAOHibernateJPA  extends UsuarioDAOHibernateJPA<R
     @Override
     public List<ResponsableDeTurno> getByTurno(Turno turno) {
         return  EMF.getEMF().createEntityManager()
-                .createQuery("SELECT r FROM ResponsableDeTurno r WHERE r.turno = :turno", ResponsableDeTurno.class).setParameter("turno", turno ).getResultList();
+                .createQuery("SELECT r FROM ResponsableDeTurno r WHERE r.turno = :turno", this.clasePersistente).setParameter("turno", turno ).getResultList();
     }
 
 

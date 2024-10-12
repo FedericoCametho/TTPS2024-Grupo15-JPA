@@ -1,6 +1,7 @@
 package org.example.ttps2024grupo15.dao.usuario;
 
 import org.example.ttps2024grupo15.dao.usuario.impl.AlumnoDAOHibernateJPA;
+import org.example.ttps2024grupo15.model.permiso.Rol;
 import org.example.ttps2024grupo15.model.request.usuario.AlumnoRequest;
 import org.example.ttps2024grupo15.model.usuario.Alumno;
 import org.example.ttps2024grupo15.service.usuario.AlumnoService;
@@ -73,7 +74,7 @@ public class AlumnoDAOTest {
         assertNotNull(alumnos);
         assertEquals(3, alumnos.size());
 
-        List<Alumno> alumnosPorRol = this.alumnoService.getAlumnosPorRol();
+        List<Alumno> alumnosPorRol = this.alumnoService.getUserByRol(Rol.ALUMNO);
         assertNotNull(alumnosPorRol);
         assertEquals(3, alumnosPorRol.size());
     }
@@ -91,7 +92,7 @@ public class AlumnoDAOTest {
     @Test
     @Order(6)
     public void queryAlumnosByEnabled(){
-        List<Alumno> alumnos = this.alumnoService.getUsersByEnabled();
+        List<Alumno> alumnos = this.alumnoService.getAlumnosByEnabled();
         assertNotNull(alumnos);
         assertEquals(2, alumnos.size());
     }
