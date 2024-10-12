@@ -67,9 +67,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         return dao.getUsuariosPorRol(rol);
     }
 
-    protected abstract void sanitizeRequestSpecificFields(R usuarioRequest);
-
-    protected void sanitizeRequest(R usuarioRequest) {
+    private void sanitizeRequest(R usuarioRequest) {
         if(usuarioRequest.getNombre() == null || usuarioRequest.getNombre().isEmpty()){
             throw new IllegalArgumentException("El nombre no puede ser nulo o vacio");
         }
@@ -85,7 +83,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         this.sanitizeRequestSpecificFields(usuarioRequest);
     }
     protected abstract T createUsuario(R usuarioRequest);
-    protected void setUpdateSpecificFields(T user, R usuarioRequest) {
-    }
+    protected abstract void setUpdateSpecificFields(T user, R usuarioRequest) ;
+    protected abstract void sanitizeRequestSpecificFields(R usuarioRequest);
+
 }
 

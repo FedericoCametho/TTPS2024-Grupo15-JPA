@@ -26,14 +26,15 @@ public class ResponsableDeTurnoService extends UsuarioService<ResponsableDeTurno
     }
 
     @Override
-    protected void sanitizeRequest(ResponsableDeTurnoRequest usuarioRequest) {
-
+    protected void setUpdateSpecificFields(ResponsableDeTurno responsableDeTurno, ResponsableDeTurnoRequest responsableDeTurnoRequest) {
+        responsableDeTurno.setTurno(responsableDeTurnoRequest.getTurno());
     }
-
     @Override
     protected ResponsableDeTurno createUsuario(ResponsableDeTurnoRequest usuarioRequest) {
-        return null;
+        return new ResponsableDeTurno(usuarioRequest.getDni(), usuarioRequest.getEmail(),usuarioRequest.getNombre(), usuarioRequest.getApellido(), usuarioRequest.getTurno());
     }
+
+
 
 
 
