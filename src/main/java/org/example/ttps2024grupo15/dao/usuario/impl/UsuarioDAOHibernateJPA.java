@@ -18,6 +18,11 @@ public abstract class UsuarioDAOHibernateJPA<T extends Usuario> extends GenericD
         return EMF.getEMF().createEntityManager()
                 .createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.email = :email", this.clasePersistente).setParameter("email", email).getSingleResult();
     }
+    @Override
+    public T getByDni(int dni) {;
+        return EMF.getEMF().createEntityManager()
+                .createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.dni = :dni", this.clasePersistente).setParameter("dni", dni).getSingleResult();
+    }
 
     @Override
     public List<T> getUsuariosPorRol(Rol rol){
