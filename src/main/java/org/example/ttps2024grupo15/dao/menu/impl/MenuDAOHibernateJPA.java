@@ -2,18 +2,15 @@ package org.example.ttps2024grupo15.dao.menu.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
 import org.example.ttps2024grupo15.dao.menu.MenuDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.awt.SystemColor.menu;
 
 public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA<Menu> implements MenuDAO {
     public MenuDAOHibernateJPA() {
@@ -36,18 +33,15 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
                         throw new IllegalArgumentException("La comida con ID " + comida.getId() + " no existe en la base de datos.");
                     }
 
-
                     comidasActualizadas.add(comidaExistente);
                 }
 
-
             menu.setComidas(comidasActualizadas);
-
             em.persist(menu);
             tx.commit();
         } catch (RuntimeException e) {
             if (tx != null && tx.isActive()) tx.rollback();
-            throw e; // escribir en un log o mostrar un mensaje
+            throw e;
         } finally {
             em.close();
         }
