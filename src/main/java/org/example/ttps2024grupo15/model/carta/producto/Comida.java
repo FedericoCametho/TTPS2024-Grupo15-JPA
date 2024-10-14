@@ -10,8 +10,6 @@ import java.util.List;
 public class Comida extends ProductoComercializable{
 
     private TipoComida tipoComida;
-    @Lob
-    private byte[] foto;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "comida_menu",
@@ -23,9 +21,8 @@ public class Comida extends ProductoComercializable{
     private List<Compra> compras;
     private Boolean enMenu;
 
-    public Comida(String nombre, TipoComida tipoComida, Double precio) {
-        this.nombre = nombre;
-        this.precio = precio;
+    public Comida(String nombre, TipoComida tipoComida, Double precio, byte[] foto) {
+        super(nombre, precio, foto);
         this.tipoComida = tipoComida;
         this.enMenu = false;
     }
@@ -57,14 +54,6 @@ public class Comida extends ProductoComercializable{
 
     public void setEnMenu(Boolean enMenu) {
         this.enMenu = enMenu;
-    }
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
     }
 
     public List<Compra> getCompras() {

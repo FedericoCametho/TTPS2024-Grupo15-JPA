@@ -15,7 +15,7 @@ import java.util.List;
 
 import static java.awt.SystemColor.menu;
 
-public class MenuDAOHibernateJPA  extends GenericDAOHibernateJPA<Menu> implements MenuDAO {
+public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA<Menu> implements MenuDAO {
     public MenuDAOHibernateJPA() {
         super(Menu.class);
     }
@@ -53,29 +53,5 @@ public class MenuDAOHibernateJPA  extends GenericDAOHibernateJPA<Menu> implement
         }
         return menu;
     }
-    @Override
-    public List<Menu> findByNombre(String nombre) {
-        EntityManager em = EMF.getEMF().createEntityManager();
-        try{
-            return em.createQuery("SELECT m FROM Menu m WHERE m.nombre LIKE :nombre").setParameter("nombre","%"+nombre+"%").getResultList();
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
 
-    @Override
-    public List<Menu> findByPrecio(Double precio) {
-        EntityManager em = EMF.getEMF().createEntityManager();
-        try{
-            return em.createQuery("SELECT m FROM Menu m WHERE m.precio = :precio").setParameter("precio",precio).getResultList();
-        }catch(Exception e){
-            e.printStackTrace();
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
 }

@@ -47,7 +47,7 @@ public class MenuDAOTest {
         this.testQueryAndValidateMenuById(menu.getId(), menuRequest);
     }
     private void testQueryAndValidateMenuById(Long id, MenuRequest menuRequest) {
-        Menu menu = this.menuService.getMenuById(id);
+        Menu menu = this.menuService.getProductById(id);
         assertNotNull(menu);
         assertEquals(menuRequest.getNombre(), menu.getNombre());
         assertEquals(menuRequest.getPrecio(), menu.getPrecio());
@@ -58,7 +58,7 @@ public class MenuDAOTest {
     @Test
     @Order(3)
     public void testGetAllMenus() {
-        List<Menu> menus = this.menuService.getAllMenues();
+        List<Menu> menus = this.menuService.getAll();
         assertNotNull(menus);
         assertEquals(2, menus.size());
     }
@@ -66,11 +66,11 @@ public class MenuDAOTest {
     @Test
     @Order(4)
     public void testGetByNombre() {
-        List<Menu> menus = this.menuService.getMenuesByNombre("No existe");
+        List<Menu> menus = this.menuService.getProductsByName("No existe");
         assertNotNull(menus);
         assertEquals(0, menus.size());
 
-        menus = this.menuService.getMenuesByNombre("Menu Lunes Comun");
+        menus = this.menuService.getProductsByName("Menu Lunes Comun");
         assertNotNull(menus);
         assertEquals(1, menus.size());
         Menu menu = menus.get(0);
@@ -82,7 +82,7 @@ public class MenuDAOTest {
     @Test
     @Order(5)
     public void testUpdateMenu(){
-        List<Menu> menus = this.menuService.getMenuesByNombre("Menu Lunes Comun");
+        List<Menu> menus = this.menuService.getProductsByName("Menu Lunes Comun");
         assertNotNull(menus);
         assertEquals(1, menus.size());
         Menu menu = menus.get(0);
@@ -94,18 +94,18 @@ public class MenuDAOTest {
     @Test
     @Order(6)
     public void testGetByPrecio() {
-        List<Menu> menus = this.menuService.getMenuesByPrecio(Double.valueOf("0.00"));
+        List<Menu> menus = this.menuService.getProductsByPrice(Double.valueOf("0.00"));
         assertNotNull(menus);
         assertEquals(0, menus.size());
 
-        menus = this.menuService.getMenuesByPrecio(Double.valueOf("3500.00"));
+        menus = this.menuService.getProductsByPrice(Double.valueOf("3500.00"));
         assertNotNull(menus);
         assertEquals(2, menus.size());
     }
     @Test
     @Order(7)
     public void testDeleteAllMenuOk(){
-        List<Menu> menues = this.menuService.getAllMenues();
+        List<Menu> menues = this.menuService.getAll();
         List<Comida> comidas = menues.stream().flatMap(menu -> menu.getComidas().stream()).collect(Collectors.toList());
         for(Comida comida : comidas){
             this.comidaService.delete(comida);
@@ -113,21 +113,21 @@ public class MenuDAOTest {
         for(Menu menu : menues){
             this.menuService.delete(menu.getId());
         }
-        assertEquals(0, this.menuService.getAllMenues().size());
+        assertEquals(0, this.menuService.getAll().size());
     }
 
 
     private Stream<Arguments> createMenuRequestWithData() {
         return Stream.of(
                 Arguments.of(this.createMenuRequest("Menu Lunes Comun", 4500.0, List.of(
-                                this.comidaService.getComidasByNombre("Milanesa").get(0),
-                                this.comidaService.getComidasByNombre("Ensalada").get(0),
-                                this.comidaService.getComidasByNombre("Helado").get(0))
+                                this.comidaService.getProductsByName("Milanesa").get(0),
+                                this.comidaService.getProductsByName("Ensalada").get(0),
+                                this.comidaService.getProductsByName("Helado").get(0))
                         )),
                 Arguments.of(this.createMenuRequest("Menu Lunes Vegano", 3500.0, List.of(
-                        this.comidaService.getComidasByNombre("Pasta").get(0),
-                        this.comidaService.getComidasByNombre("Ensalada").get(0),
-                        this.comidaService.getComidasByNombre("Manzana").get(0))
+                        this.comidaService.getProductsByName("Pasta").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Manzana").get(0))
                 ))
             );
     }
