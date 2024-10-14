@@ -17,10 +17,12 @@ public class AlumnoService extends UsuarioService<Alumno, AlumnoDAO, AlumnoReque
     public List<Alumno> getAlumnosByEnabled() {
         return this.dao.getByHabilitado();
     }
-
+    @Override
     protected Alumno createUsuario(AlumnoRequest alumnoRequest) {
         return new Alumno(alumnoRequest.getDni(), alumnoRequest.getEmail(),alumnoRequest.getNombre(), alumnoRequest.getApellido());
     }
+
+    @Override
     protected void setUpdateSpecificFields(Alumno alumno, AlumnoRequest alumnoRequest) {
         alumno.setFotoDePerfil(alumnoRequest.getFoto());
         this.validarHabilitado(alumno, alumnoRequest.isHabilitado());

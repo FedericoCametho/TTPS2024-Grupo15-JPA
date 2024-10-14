@@ -40,7 +40,7 @@ public class ComidaDAOTest {
     @Test
     @Order(2)
     public void testMassiveQuery() {
-        List<Comida> comidas = this.comidaService.getComidas();
+        List<Comida> comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(3, comidas.size());
     }
@@ -48,11 +48,11 @@ public class ComidaDAOTest {
     @Test
     @Order(3)
     public void testQueryByName() {
-        List<Comida> comidas = this.comidaService.getComidasByNombre("No existe");
+        List<Comida> comidas = this.comidaService.getProductsByName("No existe");
         assertNotNull(comidas);
         assertEquals(0, comidas.size());
 
-        comidas = this.comidaService.getComidasByNombre("Milanesa");
+        comidas = this.comidaService.getProductsByName("Milanesa");
         assertNotNull(comidas);
         assertEquals(1, comidas.size());
         Comida comida = comidas.get(0);
@@ -64,11 +64,11 @@ public class ComidaDAOTest {
     @Test
     @Order(4)
     public void testQueryByPrice() {
-        List<Comida> comidas = this.comidaService.getComidasByPrecio(Double.valueOf("0.00"));
+        List<Comida> comidas = this.comidaService.getProductsByPrice(Double.valueOf("0.00"));
         assertNotNull(comidas);
         assertEquals(0, comidas.size());
 
-        comidas = this.comidaService.getComidasByPrecio(1500.0);
+        comidas = this.comidaService.getProductsByPrice(1500.0);
         assertNotNull(comidas);
         assertEquals(1, comidas.size());
         Comida comida = comidas.get(0);
@@ -80,14 +80,14 @@ public class ComidaDAOTest {
     @Test
     @Order(5)
     public void testQueryByPriceMultipleResults() {
-        List<Comida> comidas = this.comidaService.getComidasByPrecio(Double.valueOf("2500.0"));
+        List<Comida> comidas = this.comidaService.getProductsByPrice(Double.valueOf("2500.0"));
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
     }
     @Test
     @Order(6)
     public void updateComida(){
-        Comida comidaToUpdate = this.comidaService.getComidasByNombre("Milanesa").get(0);
+        Comida comidaToUpdate = this.comidaService.getProductsByName("Milanesa").get(0);
         Comida comidaPostUpdate = this.comidaService.update(comidaToUpdate.getId(), this.createComidaRequest("Milanesa", 3000.0, TipoComida.PLATO_PRINCIPAL));
         assertNotNull(comidaPostUpdate);
         assertEquals(comidaToUpdate.getId(), comidaPostUpdate.getId());
@@ -99,11 +99,11 @@ public class ComidaDAOTest {
     @Test
     @Order(7)
     public void testDeleteComidaById() {
-        List<Comida> comidas = this.comidaService.getComidas();
+        List<Comida> comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(3, comidas.size());
         this.comidaService.delete(comidas.get(0).getId());
-        comidas = this.comidaService.getComidas();
+        comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
     }
@@ -111,20 +111,20 @@ public class ComidaDAOTest {
     @Test
     @Order(8)
     public void testDeleteComida(){
-        List<Comida> comidas = this.comidaService.getComidas();
+        List<Comida> comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(2, comidas.size());
         Comida comidaToDelete = comidas.get(0);
         this.comidaService.delete(comidaToDelete.getId());
-        comidas = this.comidaService.getComidas();
+        comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(1, comidas.size());
     }
     @AfterAll
     public void deleteAllComidas(){
-        List<Comida> comidas = this.comidaService.getComidas();
+        List<Comida> comidas = this.comidaService.getAll();
         comidas.forEach(comida -> this.comidaService.delete(comida.getId()));
-        comidas = this.comidaService.getComidas();
+        comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(0, comidas.size());
     }
@@ -138,7 +138,7 @@ public class ComidaDAOTest {
     }
 
     private void testQueryAndValidateComidaById(Long id, ComidaRequest comidaRequest) {
-        Comida comida = this.comidaService.getComidaById(id);
+        Comida comida = this.comidaService.getProductById(id);
         assertNotNull(comida);
         assertEquals(comidaRequest.getTipoComida(), comida.getTipoComida());
         assertEquals(comidaRequest.getNombre(), comida.getNombre());

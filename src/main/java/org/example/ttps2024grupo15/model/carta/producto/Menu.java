@@ -1,6 +1,5 @@
 package org.example.ttps2024grupo15.model.carta.producto;
 
-import org.example.ttps2024grupo15.model.carrito.Carrito;
 import org.example.ttps2024grupo15.model.carrito.Compra;
 import jakarta.persistence.*;
 
@@ -8,32 +7,21 @@ import java.util.List;
 
 @Entity
 public class Menu extends ProductoComercializable {
-    @Lob
-    private byte[] foto;
+
     @ManyToMany(mappedBy = "menues", fetch = FetchType.EAGER)
     private List<Comida> comidas;
     @ManyToMany(mappedBy = "menues",fetch = FetchType.EAGER)
     private List<Compra> compras;
 
-    public Menu(String titulo, Double precio, List<Comida> comidas,byte[] foto) {
-        this.nombre = titulo;
-        this.precio = precio;
+    public Menu(String titulo, Double precio, List<Comida> comidas, byte[] foto) {
+        super(titulo, precio, foto);
         this.comidas = comidas;
-        this.foto = foto;
     }
 
     public Menu() {
         super();
     }
 
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
 
     public List<Comida> getComidas() {
         return comidas;
@@ -54,5 +42,6 @@ public class Menu extends ProductoComercializable {
     public boolean hasComida(Comida comida){
         return this.comidas.contains(comida);
     }
+
 
 }

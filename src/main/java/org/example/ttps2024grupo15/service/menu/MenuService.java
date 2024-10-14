@@ -9,85 +9,46 @@ import org.example.ttps2024grupo15.model.request.menu.MenuRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MenuService {
-    private MenuDAO menuDAO;
+public class MenuService extends ProductoComercializableService<Menu, MenuDAO, MenuRequest> {
     private ComidaService comidaService;
     public MenuService(MenuDAO menuDAO, ComidaService comidaService) {
-        this.menuDAO = menuDAO;
+        super(menuDAO);
         this.comidaService = comidaService;
     }
 
-    @Transactional
-    public Menu save(MenuRequest menuRequest) {
-        this.sanitizeMenuRequest(menuRequest);
-        Menu menu = new Menu(menuRequest.getNombre(), menuRequest.getPrecio(), menuRequest.getComidas(), menuRequest.getImagen());
-        try{
-            Menu result = menuDAO.save(menu);
-            this.updateComidasEnMenuRelation(menu.getComidas(), result);
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    @Transactional
-    public Menu update(Long idMenu, MenuRequest menuRequest){
-        this.sanitizeMenuRequest(menuRequest);
-        Menu menu = this.getMenuById(idMenu);
-        menu.setNombre(menuRequest.getNombre());
-        menu.setPrecio(menuRequest.getPrecio());
-        menu.setFoto(menuRequest.getImagen());
-        try{
-            Menu result = menuDAO.update(menu);
-            List<Long> idComidasMenu = menu.getComidas().stream().mapToLong(Comida::getId).boxed().collect(Collectors.toList());
-            List<Comida> comidasToUpdate = menuRequest.getComidas().stream().filter(comida -> !idComidasMenu.contains(comida.getId())).collect(Collectors.toList());
-            if(!comidasToUpdate.isEmpty()){
-                this.updateComidasEnMenuRelation(menu.getComidas(), result);
-            }
-            return result;
-        }catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
-    @Transactional
-    public void delete(Long id) {
-        menuDAO.delete(id);
-    }
-
-    public Menu getMenuById(Long id) {
-        return menuDAO.getById(id);
-    }
-    public List<Menu> getAllMenues() {
-        return menuDAO.getAll();
-    }
-
-    public List<Menu> getMenuesByNombre(String nombre) {
-        return menuDAO.findByNombre(nombre);
-    }
-    public List<Menu> getMenuesByPrecio(Double precio) {
-        return menuDAO.findByPrecio(precio);
-    }
-
-    private void sanitizeMenuRequest(MenuRequest menuRequest){
-        if(menuRequest.getNombre() == null || menuRequest.getNombre().isEmpty()){
-            throw new IllegalArgumentException("Nombre de menu no puede ser nulo o vacio");
-        }
-        if(menuRequest.getPrecio() == null || menuRequest.getPrecio() < 0){
-            throw new IllegalArgumentException("Precio de menu no puede ser nulo o negativo");
-        }
+    @Override
+    public void sanitizeRequestSpecificFields(MenuRequest menuRequest){
         if(menuRequest.getComidas() == null || menuRequest.getComidas().isEmpty()){
             throw new IllegalArgumentException("Menu debe tener al menos una comida");
         }
     }
 
-    private void updateComidasEnMenuRelation(List<Comida> comidas, Menu menu){
-        comidas.forEach(
+    @Override
+    public void updateComidasEnMenuRelation(Menu menuOriginal, Menu menuUpdated){
+        menuOriginal.getComidas().forEach(
                 comida -> {
-                    this.comidaService.updateComidaMenuRelation(menu,comida.getId());
+                    this.comidaService.updateComidaMenuRelation(menuUpdated,comida.getId());
                 }
         );
+    }
+
+    @Override
+    protected void setUpdateSpecificFields(Menu product, MenuRequest request) {
+        // no aplicable a este caso, solo para comidas
+    }
+
+    @Override
+    public void updateSpecificRelations(Menu originalMenu, Menu updatedMenu, MenuRequest menuRequest){
+        List<Long> idComidasMenu = originalMenu.getComidas().stream().mapToLong(Comida::getId).boxed().collect(Collectors.toList());
+        List<Comida> comidasToUpdate = menuRequest.getComidas().stream().filter(comida -> !idComidasMenu.contains(comida.getId())).collect(Collectors.toList());
+        if(!comidasToUpdate.isEmpty()){
+            this.updateComidasEnMenuRelation(originalMenu, updatedMenu);
+        }
+    }
+
+    @Override
+    protected Menu createProductoComercializable(MenuRequest request) {
+        return new Menu(request.getNombre(), request.getPrecio(), request.getComidas(), request.getImagen());
     }
 
 }

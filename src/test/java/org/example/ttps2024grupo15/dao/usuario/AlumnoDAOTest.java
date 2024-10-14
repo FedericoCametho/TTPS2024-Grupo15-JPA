@@ -96,11 +96,20 @@ public class AlumnoDAOTest {
         assertNotNull(alumnos);
         assertEquals(2, alumnos.size());
     }
+    @Test
+    @Order(7)
+    public void testQueryByDni(){
+        Alumno alumno = this.alumnoService.getUserByDni(1111111);
+        assertNotNull(alumno);
+        assertEquals("Chicho", alumno.getNombre());
+        assertEquals("Siesta", alumno.getApellido());
+        assertEquals(Rol.ALUMNO, alumno.getRol());
+    }
 
 
 
     @Test
-    @Order(7)
+    @Order(8)
     public void deleteAlumnoTest(){
         List<Alumno> alumnos = this.alumnoService.getAll();
         assertNotNull(alumnos);

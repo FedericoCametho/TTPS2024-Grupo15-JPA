@@ -1,5 +1,6 @@
 package org.example.ttps2024grupo15.dao.usuario.impl;
 
+import jakarta.persistence.EntityManager;
 import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
 import org.example.ttps2024grupo15.dao.usuario.UsuarioDAO;
@@ -15,26 +16,66 @@ public abstract class UsuarioDAOHibernateJPA<T extends Usuario> extends GenericD
     }
     @Override
     public T getByEmail(String email) {;
-        return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.email = :email", this.clasePersistente).setParameter("email", email).getSingleResult();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM " + this.clasePersistente.getSimpleName() + " u WHERE u.email = :email", this.clasePersistente).setParameter("email", email).getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+    @Override
+    public T getByDni(int dni) {;
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.dni = :dni", this.clasePersistente).setParameter("dni", dni).getSingleResult();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public List<T> getUsuariosPorRol(Rol rol){
-        return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.rol = :rol", this.clasePersistente).setParameter("rol", rol).getResultList();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.rol = :rol", this.clasePersistente).setParameter("rol", rol).getResultList();
+        } catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public List<T> getUsuarioPorNombre(String nombre) {
-        return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.nombre LIKE :nombre", this.clasePersistente).setParameter("nombre", "%"+nombre+"%").getResultList();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.nombre LIKE :nombre", this.clasePersistente).setParameter("nombre", "%"+nombre+"%").getResultList();
+            }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public List<T> getUsuarioPorApellido(String apellido) {
-        return EMF.getEMF().createEntityManager()
-                .createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.apellido LIKE :apellido", this.clasePersistente).setParameter("apellido", "%"+apellido+"%").getResultList();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT u FROM "+this.clasePersistente.getSimpleName()+" u WHERE u.apellido LIKE :apellido", this.clasePersistente).setParameter("apellido", "%"+apellido+"%").getResultList();
+        } catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
 

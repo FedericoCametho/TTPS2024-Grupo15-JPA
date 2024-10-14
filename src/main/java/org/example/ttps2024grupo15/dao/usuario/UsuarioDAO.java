@@ -11,6 +11,6 @@ public interface UsuarioDAO<T extends Usuario> extends GenericDAO<T> {
     public List<T> getUsuariosPorRol(Rol rol);
     public List<T> getUsuarioPorNombre(String nombre);
     public List<T> getUsuarioPorApellido(String apellido);
-
+    public T getByDni(int dni);
 
 }
