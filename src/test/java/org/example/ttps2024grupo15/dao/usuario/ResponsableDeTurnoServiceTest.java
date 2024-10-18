@@ -1,7 +1,7 @@
 package org.example.ttps2024grupo15.dao.usuario;
 
 import org.example.ttps2024grupo15.dao.usuario.impl.ResponsableDeTurnoDAOHibernateJPA;
-import org.example.ttps2024grupo15.model.request.usuario.ResponsableDeTurnoRequest;
+import org.example.ttps2024grupo15.controller.request.usuario.ResponsableDeTurnoRequest;
 import org.example.ttps2024grupo15.model.usuario.ResponsableDeTurno;
 import org.example.ttps2024grupo15.model.usuario.Turno;
 import org.example.ttps2024grupo15.service.usuario.ResponsableDeTurnoService;

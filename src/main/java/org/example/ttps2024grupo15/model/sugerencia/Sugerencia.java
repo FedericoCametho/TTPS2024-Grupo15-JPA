@@ -26,7 +26,9 @@ public class Sugerencia {
         this.mensajeOriginal = mensaje;
         this.usuario = alumno;
     }
-
+    public Long getId() {
+        return id;
+    }
     public String getTitulo() {
         return titulo;
     }

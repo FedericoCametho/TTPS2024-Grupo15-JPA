@@ -1,7 +1,7 @@
 package org.example.ttps2024grupo15.service.usuario;
 
 import org.example.ttps2024grupo15.dao.usuario.ResponsableDeTurnoDAO;
-import org.example.ttps2024grupo15.model.request.usuario.ResponsableDeTurnoRequest;
+import org.example.ttps2024grupo15.controller.request.usuario.ResponsableDeTurnoRequest;
 import org.example.ttps2024grupo15.model.usuario.ResponsableDeTurno;
 import org.example.ttps2024grupo15.model.usuario.Turno;
 

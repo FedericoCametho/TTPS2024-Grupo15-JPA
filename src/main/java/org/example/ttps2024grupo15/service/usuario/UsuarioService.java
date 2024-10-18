@@ -5,7 +5,7 @@ import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.dao.usuario.UsuarioDAO;
 import org.example.ttps2024grupo15.model.permiso.Rol;
-import org.example.ttps2024grupo15.model.request.usuario.UsuarioRequest;
+import org.example.ttps2024grupo15.controller.request.usuario.UsuarioRequest;
 import org.example.ttps2024grupo15.model.usuario.Usuario;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
@@ -24,10 +24,11 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     public T save(R usuarioRequest) {
         this.sanitizeRequest(usuarioRequest);
         try{
+            this.validarDuplicado(usuarioRequest);
             return this.dao.save(this.createUsuario(usuarioRequest));
         } catch (Exception e){
             e.printStackTrace();
-            throw new IllegalArgumentException("El usuario ya existe");
+            throw new IllegalArgumentException("Error al guardar el usuario");
         }
 
     }
@@ -151,6 +152,15 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     private void validateDNI(Integer dni) {
         if(dni == null){
             throw new IllegalArgumentException("El dni no puede ser nulo");
+        }
+    }
+
+    private void validarDuplicado(R usuarioRequest){
+        if(this.getUserByEmail(usuarioRequest.getEmail()) != null){
+            throw new IllegalArgumentException("El email ya se encuentra registrado");
+        }
+        if(this.getUserByDni(usuarioRequest.getDni()) != null){
+            throw new IllegalArgumentException("El dni ya se encuentra registrado");
         }
     }
 

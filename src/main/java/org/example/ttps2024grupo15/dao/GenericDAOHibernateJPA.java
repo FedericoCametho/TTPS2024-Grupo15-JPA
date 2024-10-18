@@ -31,7 +31,7 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
         }
         catch (RuntimeException e) {
             if ( tx != null && tx.isActive() ) tx.rollback();
-            throw e; // escribir en un log o mostrar un mensaje
+            throw e;
         }
         finally {
             em.close();
@@ -78,7 +78,7 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
         }
         catch (RuntimeException e) {
             if ( tx != null && tx.isActive() ) tx.rollback();
-            throw e; // escribir en un log o mostrar un mensaje
+            throw e;
         } finally {
             em.close();
         }
