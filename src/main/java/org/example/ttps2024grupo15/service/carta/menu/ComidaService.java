@@ -1,13 +1,10 @@
-package org.example.ttps2024grupo15.service.menu;
+package org.example.ttps2024grupo15.service.carta.menu;
 
 import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.dao.menu.ComidaDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
-import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
-import org.example.ttps2024grupo15.model.request.menu.ComidaRequest;
-
-import java.util.List;
+import org.example.ttps2024grupo15.model.request.carta.menu.ComidaRequest;
 
 public class ComidaService extends ProductoComercializableService<Comida, ComidaDAO, ComidaRequest> {
 

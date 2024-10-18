@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AlumnoDAOTest {
+public class AlumnoServiceTest {
     private AlumnoDAOHibernateJPA alumnoDAO;
     private AlumnoService alumnoService;
 

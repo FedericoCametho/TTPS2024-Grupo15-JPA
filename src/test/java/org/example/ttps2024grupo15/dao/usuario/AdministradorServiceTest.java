@@ -1,6 +1,5 @@
 package org.example.ttps2024grupo15.dao.usuario;
 
-import jakarta.persistence.NoResultException;
 import org.example.ttps2024grupo15.dao.usuario.impl.AdministradorDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.permiso.Rol;
 import org.example.ttps2024grupo15.model.request.usuario.AdministradorRequest;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AdministradorDAOTest {
+public class AdministradorServiceTest {
     private AdministradorDAOHibernateJPA administradorDAOHibernateJPA;
     private AdministradorService administradorService;
 
