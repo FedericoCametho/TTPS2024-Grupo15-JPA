@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.model.request.menu;
+package org.example.ttps2024grupo15.model.request.carta.menu;
 
 public abstract class ProductoComercializableRequest {
     private String nombre;

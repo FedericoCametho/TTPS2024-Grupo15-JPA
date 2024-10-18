@@ -1,5 +1,6 @@
 package org.example.ttps2024grupo15.dao.usuario.impl;
 
+import jakarta.persistence.EntityManager;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
 import org.example.ttps2024grupo15.dao.usuario.ResponsableDeTurnoDAO;
 import org.example.ttps2024grupo15.model.usuario.ResponsableDeTurno;
@@ -15,8 +16,15 @@ public class ResponsableDeTurnoDAOHibernateJPA  extends UsuarioDAOHibernateJPA<R
 
     @Override
     public List<ResponsableDeTurno> getByTurno(Turno turno) {
-        return  EMF.getEMF().createEntityManager()
-                .createQuery("SELECT r FROM ResponsableDeTurno r WHERE r.turno = :turno", this.clasePersistente).setParameter("turno", turno ).getResultList();
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try {
+            return em.createQuery("SELECT r FROM ResponsableDeTurno r WHERE r.turno = :turno", ResponsableDeTurno.class).setParameter("turno", turno).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
 

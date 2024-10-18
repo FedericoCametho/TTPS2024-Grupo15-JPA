@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.model.request.menu;
+package org.example.ttps2024grupo15.model.request.carta.menu;
 
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
 

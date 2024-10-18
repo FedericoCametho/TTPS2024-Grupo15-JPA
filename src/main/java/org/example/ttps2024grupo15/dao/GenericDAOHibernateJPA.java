@@ -96,24 +96,34 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
             return true;
         } catch (RuntimeException e) {
             if ( em.getTransaction().isActive() ) em.getTransaction().rollback();
-            throw e; // escribir en un log o mostrar un mensaje
+            throw e;
         } finally {
             em.close();
         }
     }
     @Override
     public List<T> getAllByOrder(String columnOrder) {
-        Query consulta=
-                EMF.getEMF().createEntityManager().createQuery("SELECT e FROM "+clasePersistente.getSimpleName()+" e ORDER BY e."+columnOrder);
-        List<T> resultado = (List<T>)consulta.getResultList();
-        return resultado;
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try {
+            return em.createQuery("SELECT e FROM " + clasePersistente.getSimpleName() + " e ORDER BY e." + columnOrder, clasePersistente).getResultList();
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public List<T> getAll(){
-        Query consulta=
-                EMF.getEMF().createEntityManager().createQuery("SELECT e FROM "+clasePersistente.getSimpleName()+" e");
-        List<T> resultado = (List<T>)consulta.getResultList();
-        return resultado;
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try {
+            return em.createQuery("SELECT e FROM " + clasePersistente.getSimpleName() + " e", clasePersistente).getResultList();
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 }

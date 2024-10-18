@@ -1,7 +1,6 @@
-package org.example.ttps2024grupo15.model.request.menu;
+package org.example.ttps2024grupo15.model.request.carta.menu;
 
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
-import org.example.ttps2024grupo15.model.request.carta.menu.ProductoComercializableRequest;
 
 import java.util.List;
 

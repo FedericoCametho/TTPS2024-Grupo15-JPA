@@ -1,10 +1,11 @@
-package org.example.ttps2024grupo15.service.menu;
+package org.example.ttps2024grupo15.service.carta.menu;
 
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.dao.menu.ProductoComercializableDAO;
 import org.example.ttps2024grupo15.model.carta.producto.ProductoComercializable;
 import org.example.ttps2024grupo15.model.request.carta.menu.ProductoComercializableRequest;
+import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
 
     @Transactional
     public T update(Long id, R request){
-        this.validateID(id);
+        RequestValidatorHelper.validateID(id);
         this.sanitizeRequest(request);
         T originalProduct;
         try{
@@ -52,8 +53,8 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
     }
     @Transactional
     public void delete(Long id) {
+        RequestValidatorHelper.validateID(id);
         try{
-            this.validateID(id);
             this.dao.delete(id);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -62,10 +63,10 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
     }
     @Transactional
     public void delete(T product) {
+        if(product == null){
+            throw new IllegalArgumentException("El producto comercializable no puede ser nulo");
+        }
         try{
-            if(product == null){
-                throw new IllegalArgumentException("El producto comercializable no puede ser nulo");
-            }
             this.dao.delete(product);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -74,8 +75,8 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
     }
 
     public T getProductById(Long id) {
+        RequestValidatorHelper.validateID(id);
         try{
-            this.validateID(id);
             return dao.getById(id);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -86,8 +87,8 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
         return dao.getAll();
     }
     public List<T> getProductsByName(String name) {
+        RequestValidatorHelper.validateStringInputParameter(name, "El nombre del producto no puede ser nulo o vacío");
         try{
-            this.validateStringInputParameter(name, "El nombre del producto no puede ser nulo o vacío");
             return dao.findByNombre(name);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -95,8 +96,8 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
         }
     }
     public List<T> getProductsByPrice(Double price) {
+        RequestValidatorHelper.validateDoubleInputParameter(price, "El precio del producto no puede ser nulo o negativo");
         try{
-            this.validateDoubleInputParameter(price, "El precio del producto no puede ser nulo o negativo");
             return dao.findByPrecio(price);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -113,21 +114,7 @@ public abstract class ProductoComercializableService<T extends ProductoComercial
         }
         this.sanitizeRequestSpecificFields(request);
     }
-    private void validateID(Long id) {
-        if(id == null){
-            throw new IllegalArgumentException("El id no puede ser nulo");
-        }
-    }
-    private void validateDoubleInputParameter(Double param, String message){
-        if(param == null || param < 0){
-            throw new IllegalArgumentException(message);
-        }
-    }
-    private void validateStringInputParameter(String param, String message){
-        if(param == null || param.isEmpty()){
-            throw new IllegalArgumentException(message);
-        }
-    }
+
     protected abstract void sanitizeRequestSpecificFields(R requestequest);
     protected abstract void updateSpecificRelations(T originalProduc, T updatedProduct, R request) ;
     protected abstract T createProductoComercializable(R request);

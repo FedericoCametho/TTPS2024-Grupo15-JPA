@@ -1,14 +1,14 @@
-package org.example.ttps2024grupo15.dao.producto;
+package org.example.ttps2024grupo15.dao.carta.menu;
 
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.menu.impl.MenuDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
-import org.example.ttps2024grupo15.model.request.menu.ComidaRequest;
-import org.example.ttps2024grupo15.model.request.menu.MenuRequest;
-import org.example.ttps2024grupo15.service.menu.ComidaService;
-import org.example.ttps2024grupo15.service.menu.MenuService;
+import org.example.ttps2024grupo15.model.request.carta.menu.ComidaRequest;
+import org.example.ttps2024grupo15.model.request.carta.menu.MenuRequest;
+import org.example.ttps2024grupo15.service.carta.menu.ComidaService;
+import org.example.ttps2024grupo15.service.carta.menu.MenuService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class MenuDAOTest {
+public class MenuServiceTest {
     private MenuDAOHibernateJPA menuDAO;
     private MenuService menuService;
     private ComidaDAOHibernateJPA comidaDAO;

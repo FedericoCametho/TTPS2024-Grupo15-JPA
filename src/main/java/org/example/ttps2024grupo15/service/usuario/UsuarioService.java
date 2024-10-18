@@ -7,6 +7,7 @@ import org.example.ttps2024grupo15.dao.usuario.UsuarioDAO;
 import org.example.ttps2024grupo15.model.permiso.Rol;
 import org.example.ttps2024grupo15.model.request.usuario.UsuarioRequest;
 import org.example.ttps2024grupo15.model.usuario.Usuario;
+import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
 
     @Transactional
     public T update(Long id, R usuarioRequest){
-        this.validateID(id);
+        RequestValidatorHelper.validateID(id);
         this.sanitizeRequest(usuarioRequest);
         T user;
         try{
@@ -52,8 +53,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
 
     @Transactional
     public void delete(Long id) {
+        RequestValidatorHelper.validateID(id);
         try{
-            this.validateID(id);
             this.dao.delete(id);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -62,10 +63,10 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     }
     @Transactional
     public void delete(T user) {
+        if(user == null){
+            throw new IllegalArgumentException("El usuario no puede ser nulo");
+        }
         try{
-            if(user == null){
-                throw new IllegalArgumentException("El usuario no puede ser nulo");
-            }
             this.dao.delete(user);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -73,8 +74,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         }
     }
     public T getUserById(Long id) {
+        RequestValidatorHelper.validateID(id);
         try{
-            this.validateID(id);
             return dao.getById(id);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -83,8 +84,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     }
 
     public List<T> getUsersByName(String name) {
+        RequestValidatorHelper.validateStringInputParameter(name, "El nombre no puede ser nulo o vacio");
         try{
-            this.validateStringInputParameter(name, "El nombre no puede ser nulo o vacio");
             return dao.getUsuarioPorNombre(name);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -93,8 +94,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     }
 
     public List<T> getUsersByLastName(String lastName) {
+        RequestValidatorHelper.validateStringInputParameter(lastName, "El apellido no puede ser nulo o vacio");
         try{
-            this.validateStringInputParameter(lastName, "El apellido no puede ser nulo o vacio");
             return dao.getUsuarioPorApellido(lastName);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -103,8 +104,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     }
 
     public T getUserByEmail(String email) {
+        RequestValidatorHelper.validateStringInputParameter(email,  "El email no puede ser nulo o vacio");
         try{
-            this.validateStringInputParameter(email,  "El email no puede ser nulo o vacio");
             return dao.getByEmail(email);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -113,8 +114,8 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     }
 
     public T getUserByDni(Integer dni) {
+        this.validateDNI(dni);
         try{
-            this.validateDNI(dni);
             return dao.getByDni(dni);
         } catch (NoResultException e){
             e.printStackTrace();
@@ -127,6 +128,9 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
     }
 
     public List<T> getUserByRol(Rol rol){
+        if(rol == null){
+            throw new IllegalArgumentException("El rol no puede ser nulo");
+        }
         return dao.getUsuariosPorRol(rol);
     }
 
@@ -140,27 +144,17 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         if(usuarioRequest.getEmail() == null || usuarioRequest.getEmail().isEmpty()){
             throw new IllegalArgumentException("El email  no puede ser nulo o vacio");
         }
-        if(usuarioRequest.getDni() == null){
-            throw new IllegalArgumentException("El dni  no puede ser nulo");
-        }
+        this.validateDNI(usuarioRequest.getDni());
         this.sanitizeRequestSpecificFields(usuarioRequest);
     }
-    private void validateID(Long id) {
-        if(id == null){
-            throw new IllegalArgumentException("El id no puede ser nulo");
-        }
-    }
+
     private void validateDNI(Integer dni) {
         if(dni == null){
             throw new IllegalArgumentException("El dni no puede ser nulo");
         }
     }
 
-    private void validateStringInputParameter(String param, String message){
-        if(param == null || param.isEmpty()){
-            throw new IllegalArgumentException(message);
-        }
-    }
+
     protected abstract T createUsuario(R usuarioRequest);
     protected abstract void setUpdateSpecificFields(T user, R usuarioRequest) ;
     protected abstract void sanitizeRequestSpecificFields(R usuarioRequest);
