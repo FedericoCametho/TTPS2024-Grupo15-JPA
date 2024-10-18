@@ -2,7 +2,7 @@ package org.example.ttps2024grupo15.dao.usuario;
 
 import org.example.ttps2024grupo15.dao.usuario.impl.AdministradorDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.permiso.Rol;
-import org.example.ttps2024grupo15.model.request.usuario.AdministradorRequest;
+import org.example.ttps2024grupo15.controller.request.usuario.AdministradorRequest;
 import org.example.ttps2024grupo15.model.usuario.Administrador;
 import org.example.ttps2024grupo15.service.usuario.AdministradorService;
 import org.junit.jupiter.api.*;

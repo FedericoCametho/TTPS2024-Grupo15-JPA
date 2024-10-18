@@ -1,9 +1,4 @@
-package org.example.ttps2024grupo15.model.request.usuario;
-
-import org.example.ttps2024grupo15.model.carrito.Compra;
-import jakarta.persistence.Lob;
-
-import java.util.List;
+package org.example.ttps2024grupo15.controller.request.usuario;
 
 public class AlumnoRequest extends UsuarioRequest {
     private byte[] foto;

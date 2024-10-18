@@ -3,7 +3,7 @@ package org.example.ttps2024grupo15.service.usuario;
 
 
 import org.example.ttps2024grupo15.dao.usuario.AlumnoDAO;
-import org.example.ttps2024grupo15.model.request.usuario.AlumnoRequest;
+import org.example.ttps2024grupo15.controller.request.usuario.AlumnoRequest;
 import org.example.ttps2024grupo15.model.usuario.Alumno;
 
 import java.util.List;
