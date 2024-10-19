@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.controller.request.carta.menu;
+package org.example.ttps2024grupo15.controller.request.carta.menu.producto;
 
 public abstract class ProductoComercializableRequest {
     private String nombre;

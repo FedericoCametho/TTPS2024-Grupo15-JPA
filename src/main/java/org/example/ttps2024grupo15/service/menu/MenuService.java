@@ -1,9 +1,10 @@
 package org.example.ttps2024grupo15.service.menu;
 
-import org.example.ttps2024grupo15.controller.request.carta.menu.MenuRequest;
+import org.example.ttps2024grupo15.controller.request.carta.menu.producto.MenuRequest;
 import org.example.ttps2024grupo15.dao.menu.MenuDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
+import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 
 import java.util.List;
@@ -11,10 +12,12 @@ import java.util.stream.Collectors;
 
 public class MenuService extends ProductoComercializableService<Menu, MenuDAO, MenuRequest> {
     private ComidaService comidaService;
+
     public MenuService(MenuDAO menuDAO, ComidaService comidaService) {
         super(menuDAO);
         this.comidaService = comidaService;
     }
+
 
     @Override
     public void sanitizeRequestSpecificFields(MenuRequest menuRequest){
@@ -49,6 +52,15 @@ public class MenuService extends ProductoComercializableService<Menu, MenuDAO, M
     @Override
     protected Menu createProductoComercializable(MenuRequest request) {
         return new Menu(request.getNombre(), request.getPrecio(), request.getComidas(), request.getImagen());
+    }
+
+    public Menu getMenuById(Long id){
+        RequestValidatorHelper.validateID(id);
+        try{
+            return this.dao.getById(id);
+        } catch (Exception e){
+            throw new IllegalArgumentException("No se encontro menu con id: " + id);
+        }
     }
 
 }

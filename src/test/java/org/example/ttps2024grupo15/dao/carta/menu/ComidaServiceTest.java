@@ -3,7 +3,7 @@ package org.example.ttps2024grupo15.dao.carta.menu;
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
-import org.example.ttps2024grupo15.controller.request.carta.menu.ComidaRequest;
+import org.example.ttps2024grupo15.controller.request.carta.menu.producto.ComidaRequest;
 import org.example.ttps2024grupo15.service.carta.menu.ComidaService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

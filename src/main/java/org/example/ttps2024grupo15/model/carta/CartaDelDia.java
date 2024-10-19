@@ -34,8 +34,6 @@ public class CartaDelDia {
     public CartaDelDia() {
     }
 
-
-
     public Long getId() {
         return id;
     }
