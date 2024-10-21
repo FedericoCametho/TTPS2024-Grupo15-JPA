@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao.cartaDelDia;
+package org.example.ttps2024grupo15.dao.menu.carta.cartaDelDia;
 
 import jakarta.persistence.EntityManager;
 import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;

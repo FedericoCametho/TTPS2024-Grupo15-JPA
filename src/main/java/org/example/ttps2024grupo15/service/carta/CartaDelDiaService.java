@@ -1,7 +1,7 @@
-package org.example.ttps2024grupo15.service.cartas;
+package org.example.ttps2024grupo15.service.carta;
 
 import org.example.ttps2024grupo15.controller.request.carta.menu.CartaDelDiaRequest;
-import org.example.ttps2024grupo15.dao.cartaDelDia.CartaDelDiaDAO;
+import org.example.ttps2024grupo15.dao.menu.carta.cartaDelDia.CartaDelDiaDAO;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
@@ -50,16 +50,10 @@ public class CartaDelDiaService  {
         if (cartaDelDiaRequest.getFechaFin() == null) {
             throw new IllegalArgumentException("Fecha de fin es requerida");
         }
-        if (cartaDelDiaRequest.getCartaSemanal() == null) {
-            throw new IllegalArgumentException("Carta semanal es requerida");
-        }
-
-
     }
 
     public CartaDelDia createCartaDelDia(CartaDelDiaRequest cartaDelDiaRequest) {
         CartaDelDia cartaDelDia = new CartaDelDia();
-        cartaDelDia.setCartaSemanal(cartaDelDiaRequest.getCartaSemanal());
         cartaDelDia.setDiaSemana(cartaDelDiaRequest.getDiaSemana());
         cartaDelDia.setFechaFin(cartaDelDiaRequest.getFechaFin());
         cartaDelDia.setFechaInicio(cartaDelDiaRequest.getFechaInicio());
