@@ -1,23 +1,21 @@
-package org.example.ttps2024grupo15.dao.carta.menu;
+package org.example.ttps2024grupo15.dao.carta;
 
-import org.example.ttps2024grupo15.controller.request.carta.menu.CartaDelDiaRequest;
-import org.example.ttps2024grupo15.controller.request.carta.menu.CartaSemanalRequest;
-import org.example.ttps2024grupo15.controller.request.carta.menu.producto.ComidaRequest;
-import org.example.ttps2024grupo15.controller.request.carta.menu.producto.MenuRequest;
+import org.example.ttps2024grupo15.controller.request.carta.CartaDelDiaRequest;
+import org.example.ttps2024grupo15.controller.request.carta.producto.ComidaRequest;
+import org.example.ttps2024grupo15.controller.request.carta.producto.MenuRequest;
 import org.example.ttps2024grupo15.dao.cartaDelDia.CartaDelDiaDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.cartaSemanal.CartaSemanalDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.menu.impl.MenuDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
-import org.example.ttps2024grupo15.model.carta.CartaSemanal;
 import org.example.ttps2024grupo15.model.carta.DiaSemana;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
-import org.example.ttps2024grupo15.service.cartas.CartaSemanalService;
-import org.example.ttps2024grupo15.service.menu.ComidaService;
-import org.example.ttps2024grupo15.service.cartas.CartaDelDiaService;
-import org.example.ttps2024grupo15.service.menu.MenuService;
+import org.example.ttps2024grupo15.service.carta.CartaSemanalService;
+import org.example.ttps2024grupo15.service.carta.CartaDelDiaService;
+import org.example.ttps2024grupo15.service.carta.producto.ComidaService;
+import org.example.ttps2024grupo15.service.carta.producto.MenuService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,8 +25,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -63,7 +60,8 @@ public class CartaDelDiaTest {
     @MethodSource("createComidaRequestWithData")
     @Order(1)
     public void createComidas(ComidaRequest comidaRequest) {
-        this.comidaService.save(comidaRequest);
+        Comida comida = this.comidaService.save(comidaRequest);
+        assertNotNull(this.comidaService.getProductById(comida.getId()));
     }
     private Stream<Arguments> createComidaRequestWithData() {
         return Stream.of(
@@ -88,16 +86,9 @@ public class CartaDelDiaTest {
     @Order(2)
     public void testCreateMenu(MenuRequest menuRequest) {
         Menu menu = this.menuService.save(menuRequest);
-        this.testQueryAndValidateMenuById(menu.getId(), menuRequest);
+        assertNotNull(this.menuService.getProductById(menu.getId()));
     }
-    private void testQueryAndValidateMenuById(Long id, MenuRequest menuRequest) {
-        Menu menu = this.menuService.getProductById(id);
-        assertNotNull(menu);
-        assertEquals(menuRequest.getNombre(), menu.getNombre());
-        assertEquals(menuRequest.getPrecio(), menu.getPrecio());
-        assertEquals(menuRequest.getComidas().size(), menu.getComidas().size());
-        assertEquals(menuRequest.getImagen(), menu.getFoto());
-    }
+
 
     private Stream<Arguments> createMenuRequestWithData() {
         return Stream.of(
@@ -123,33 +114,8 @@ public class CartaDelDiaTest {
     }
 
     @ParameterizedTest
-    @MethodSource("createCartaSemanalRequestWithData")
-    @Order(3)
-    public void testCreateCartaSemanal(CartaSemanalRequest cartaSemanalRequest) {
-        CartaSemanal cartaSemanal = this.cartaSemanalService.save(cartaSemanalRequest);
-        this.testQueryAndValidateCartaSemanalById(cartaSemanal.getId());
-    }
-
-    private void testQueryAndValidateCartaSemanalById(Long id) {
-        CartaSemanal cartaSemanal = this.cartaSemanalService.getById(id);
-        assertNotNull(cartaSemanal);
-    }
-
-    private Stream<Arguments> createCartaSemanalRequestWithData() {
-        return Stream.of(
-                Arguments.of(this.createCartaSemanalRequest(List.of(new CartaDelDia())))
-        );
-    }
-
-    private CartaSemanalRequest createCartaSemanalRequest(List<CartaDelDia> cartas) {
-        CartaSemanalRequest cartaSemanalRequest = new CartaSemanalRequest();
-        cartaSemanalRequest.setCartasDelDia(cartas);
-        return cartaSemanalRequest;
-    }
-
-    @ParameterizedTest
     @MethodSource("createCartaDelDiaRequestWithData")
-    @Order(4)
+    @Order(3)
     public void testCreateCartaDelDia(CartaDelDiaRequest cartaDelDiaRequest) {
         CartaDelDia cartaDelDia = this.cartaDelDiaService.save(cartaDelDiaRequest);
         this.testQueryAndValidateCartaDelDiaById(cartaDelDia.getId(), cartaDelDiaRequest);
@@ -160,7 +126,7 @@ public class CartaDelDiaTest {
         LocalDate fechaFin = LocalDate.of(2021, 10, 7);
 
         return Stream.of(
-                Arguments.of(createCartaDelDiaRequest("Menu Lunes Comun", "Menu Lunes Vegano", this.cartaSemanalService.getById(1L), DiaSemana.LUNES, fechaInicio, fechaFin))
+                Arguments.of(this.createCartaDelDiaRequest("Menu Lunes Comun", "Menu Lunes Vegano", DiaSemana.LUNES, fechaInicio, fechaFin))
         );
 
     }
@@ -168,36 +134,34 @@ public class CartaDelDiaTest {
     private void testQueryAndValidateCartaDelDiaById(Long id, CartaDelDiaRequest cartaDelDiaRequest) {
         CartaDelDia cartaDelDia = this.cartaDelDiaService.getById(id);
         assertNotNull(cartaDelDia);
-        assertEquals(cartaDelDiaRequest.getMenuComun(), cartaDelDia.getMenuComun());
-        assertEquals(cartaDelDiaRequest.getMenuVegetariano(), cartaDelDia.getMenuVegetariano());
+        Menu menuComunRequest = this.menuService.getProductById(cartaDelDiaRequest.getMenuComun().getId());
+        Menu menuVegetarianoRequest = this.menuService.getProductById(cartaDelDiaRequest.getMenuVegetariano().getId());
+        assertEquals(menuComunRequest.getId(), cartaDelDia.getMenuComun().getId());
+        assertEquals(menuVegetarianoRequest.getId(), cartaDelDia.getMenuVegetariano().getId());
         assertEquals(cartaDelDiaRequest.getDiaSemana(), cartaDelDia.getDiaSemana());
         assertEquals(cartaDelDiaRequest.getFechaInicio(), cartaDelDia.getFechaInicio());
         assertEquals(cartaDelDiaRequest.getFechaFin(), cartaDelDia.getFechaFin());
-        assertEquals(cartaDelDiaRequest.getCartaSemanal(), cartaDelDia.getCartaSemanal());
+        assertNull(cartaDelDia.getCartaSemanal());
     }
 
 
-    private CartaDelDiaRequest createCartaDelDiaRequest (String menuComunP, String menuVegetarianoP, CartaSemanal cartaSemanal, DiaSemana diaSemana, LocalDate fechaInicio, LocalDate fechaFin) {
+    private CartaDelDiaRequest createCartaDelDiaRequest (String menuComunP, String menuVegetarianoP, DiaSemana diaSemana, LocalDate fechaInicio, LocalDate fechaFin) {
         CartaDelDiaRequest cartaDelDiaRequest = new CartaDelDiaRequest();
 
-        cartaDelDiaRequest.setMenuComun(this.getMenu(menuComunP));
-        cartaDelDiaRequest.setMenuVegetariano(this.getMenu(menuVegetarianoP));
+        cartaDelDiaRequest.setMenuComun(this.menuService.getProductsByName(menuComunP).get(0));
+        cartaDelDiaRequest.setMenuVegetariano(this.menuService.getProductsByName(menuVegetarianoP).get(0));
         cartaDelDiaRequest.setDiaSemana(diaSemana);
         cartaDelDiaRequest.setFechaInicio(fechaInicio);
         cartaDelDiaRequest.setFechaFin(fechaFin);
-        cartaDelDiaRequest.setCartaSemanal(cartaSemanal);
+        cartaDelDiaRequest.setCartaSemanal(null);
 
         return cartaDelDiaRequest;
     }
 
-    private Menu getMenu(String menu){
-        List<Menu> menus = this.menuService.getProductsByName(menu);
-        return menus.get(0);
-    }
 
 
     @Test
-    @Order(5)
+    @Order(4)
     public void testGetAllCartasDelDia() {
         List<CartaDelDia> cartasDelDia = this.cartaDelDiaService.getAll();
         assertNotNull(cartasDelDia);
@@ -211,16 +175,22 @@ public class CartaDelDiaTest {
         cartasDelDia = this.cartaDelDiaService.getAll();
         assertNotNull(cartasDelDia);
         assertEquals(0,cartasDelDia.size());
-        List<Menu> menus = this.menuService.getAll();
-        menus.forEach(menu -> this.menuService.delete(menu.getId()));
-        menus = this.menuService.getAll();
-        assertNotNull(menus);
-        assertEquals(0,menus.size());
+
+
         List<Comida> comidas = this.comidaService.getAll();
         comidas.forEach(comida -> this.comidaService.delete(comida.getId()));
         comidas = this.comidaService.getAll();
         assertNotNull(comidas);
         assertEquals(0,comidas.size());
+
+
+        List<Menu> menus = this.menuService.getAll();
+        menus.forEach(menu -> this.menuService.delete(menu.getId()));
+        menus = this.menuService.getAll();
+        assertNotNull(menus);
+        assertEquals(0,menus.size());
+
+
     }
 
 

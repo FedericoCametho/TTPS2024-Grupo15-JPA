@@ -48,4 +48,35 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
         return menu;
     }
 
+    @Override
+    public Menu getById(Long id) {
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery(
+                            "SELECT m FROM Menu m JOIN FETCH m.comidas WHERE m.id = :id", this.clasePersistente)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Menu> findByNombre(String nombre) {
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT m FROM Menu m JOIN FETCH m.comidas WHERE m.nombre LIKE :nombre", this.clasePersistente).setParameter("nombre","%"+nombre+"%").getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+
+
 }

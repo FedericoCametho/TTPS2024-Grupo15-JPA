@@ -1,10 +1,12 @@
-package org.example.ttps2024grupo15.service.menu;
+package org.example.ttps2024grupo15.service.carta.producto;
 
 import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.dao.menu.ComidaDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
-import org.example.ttps2024grupo15.controller.request.carta.menu.producto.ComidaRequest;
+import org.example.ttps2024grupo15.controller.request.carta.producto.ComidaRequest;
+
+import java.util.List;
 
 public class ComidaService extends ProductoComercializableService<Comida, ComidaDAO, ComidaRequest> {
 
@@ -45,7 +47,5 @@ public class ComidaService extends ProductoComercializableService<Comida, Comida
     protected void updateSpecificRelations(Comida originalProduc, Comida updatedProduct, ComidaRequest request) {
         // no aplica a este caso, solo para menues
     }
-
-
 
 }
