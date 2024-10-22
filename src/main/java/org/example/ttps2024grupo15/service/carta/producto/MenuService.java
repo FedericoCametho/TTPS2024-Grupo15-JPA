@@ -16,41 +16,6 @@ public class MenuService extends ProductoComercializableService<Menu, MenuDAO, M
         super(menuDAO);
         this.comidaService = comidaService;
     }
-
-    @Override
-    public Menu getProductById(Long id){
-        RequestValidatorHelper.validateID(id);
-        try{
-            return dao.getById(id);
-        } catch (NoResultException e){
-            e.printStackTrace();
-            throw new IllegalArgumentException("El producto no existe");
-        }
-    }
-
-    @Override
-    public List<Menu> getProductsByName(String name){
-        RequestValidatorHelper.validateStringInputParameter(name, "El nombre del producto no puede ser nulo o vacío");
-        try{
-            return this.dao.findByNombre(name);
-        } catch (NoResultException e){
-            e.printStackTrace();
-            throw new IllegalArgumentException("El producto no existe");
-        }
-    }
-
-    @Override
-    public List<Menu> getProductsByPrice(Double price){
-        RequestValidatorHelper.validateDoubleInputParameter(price, "El precio del producto no puede ser nulo o negativo");
-        try{
-            return this.dao.findByPrecio(price);
-        } catch (NoResultException e){
-            e.printStackTrace();
-            throw new IllegalArgumentException("El producto no existe");
-        }
-    }
-
-
     @Override
     public void sanitizeRequestSpecificFields(MenuRequest menuRequest){
         if(menuRequest.getComidas() == null || menuRequest.getComidas().isEmpty()){
