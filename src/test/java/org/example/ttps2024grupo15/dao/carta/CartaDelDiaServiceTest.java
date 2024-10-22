@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CartaDelDiaTest {
+public class CartaDelDiaServiceTest {
     private CartaDelDiaDAOHibernateJPA cartaDelDiaDAO;
     private CartaDelDiaService cartaDelDiaService;
 
