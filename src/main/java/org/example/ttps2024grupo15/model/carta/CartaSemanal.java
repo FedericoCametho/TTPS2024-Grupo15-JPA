@@ -10,7 +10,7 @@ public class CartaSemanal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "cartaSemanal")
+    @OneToMany(mappedBy = "cartaSemanal", fetch = FetchType.EAGER)
     private List<CartaDelDia> cartas;
 
     public CartaSemanal(List<CartaDelDia> cartas) {

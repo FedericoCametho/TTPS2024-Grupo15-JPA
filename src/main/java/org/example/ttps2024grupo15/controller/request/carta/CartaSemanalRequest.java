@@ -15,4 +15,5 @@ public class CartaSemanalRequest {
         this.cartasDelDia = cartasDelDia;
     }
 
+
 }

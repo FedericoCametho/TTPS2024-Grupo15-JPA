@@ -5,7 +5,6 @@ import org.example.ttps2024grupo15.controller.request.carta.producto.ComidaReque
 import org.example.ttps2024grupo15.controller.request.carta.producto.MenuRequest;
 
 import org.example.ttps2024grupo15.dao.carta.cartaDelDia.CartaDelDiaDAOHibernateJPA;
-import org.example.ttps2024grupo15.dao.carta.cartaSemanal.CartaSemanalDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.carta.producto.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.carta.producto.impl.MenuDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
@@ -13,7 +12,6 @@ import org.example.ttps2024grupo15.model.carta.DiaSemana;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
-import org.example.ttps2024grupo15.service.carta.CartaSemanalService;
 import org.example.ttps2024grupo15.service.carta.CartaDelDiaService;
 import org.example.ttps2024grupo15.service.carta.producto.ComidaService;
 import org.example.ttps2024grupo15.service.carta.producto.MenuService;
@@ -30,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CartaDelDiaTest {
+public class CartaDelDiaServiceTest {
     private CartaDelDiaDAOHibernateJPA cartaDelDiaDAO;
     private CartaDelDiaService cartaDelDiaService;
 
@@ -39,9 +37,6 @@ public class CartaDelDiaTest {
     private ComidaDAOHibernateJPA comidaDAO;
     private ComidaService comidaService;
 
-    private CartaSemanalDAOHibernateJPA cartaSemanalDAO;
-    private CartaSemanalService cartaSemanalService;
-
     @BeforeAll
     public void setUp(){
         this.comidaDAO = new ComidaDAOHibernateJPA();
@@ -49,9 +44,6 @@ public class CartaDelDiaTest {
 
         this.menuDAO = new MenuDAOHibernateJPA();
         this.menuService = new MenuService(menuDAO, comidaService);
-
-        this.cartaSemanalDAO = new CartaSemanalDAOHibernateJPA();
-        this.cartaSemanalService = new CartaSemanalService(cartaSemanalDAO);
 
         this.cartaDelDiaDAO = new CartaDelDiaDAOHibernateJPA();
         this.cartaDelDiaService = new CartaDelDiaService(cartaDelDiaDAO);
