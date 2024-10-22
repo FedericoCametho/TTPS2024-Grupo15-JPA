@@ -20,7 +20,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -125,11 +124,8 @@ public class CartaDelDiaServiceTest {
     }
 
     private Stream<Arguments> createCartaDelDiaRequestWithData() {
-        LocalDate fechaInicio = LocalDate.of(2021, 10, 1);
-        LocalDate fechaFin = LocalDate.of(2021, 10, 7);
-
         return Stream.of(
-                Arguments.of(this.createCartaDelDiaRequest("Menu Lunes Comun", "Menu Lunes Vegano", DiaSemana.LUNES, fechaInicio, fechaFin))
+                Arguments.of(this.createCartaDelDiaRequest("Menu Lunes Comun", "Menu Lunes Vegano", DiaSemana.LUNES))
         );
 
     }
@@ -142,20 +138,16 @@ public class CartaDelDiaServiceTest {
         assertEquals(menuComunRequest.getId(), cartaDelDia.getMenuComun().getId());
         assertEquals(menuVegetarianoRequest.getId(), cartaDelDia.getMenuVegetariano().getId());
         assertEquals(cartaDelDiaRequest.getDiaSemana(), cartaDelDia.getDiaSemana());
-        assertEquals(cartaDelDiaRequest.getFechaInicio(), cartaDelDia.getFechaInicio());
-        assertEquals(cartaDelDiaRequest.getFechaFin(), cartaDelDia.getFechaFin());
         assertNull(cartaDelDia.getCartaSemanal());
     }
 
 
-    private CartaDelDiaRequest createCartaDelDiaRequest (String menuComunP, String menuVegetarianoP, DiaSemana diaSemana, LocalDate fechaInicio, LocalDate fechaFin) {
+    private CartaDelDiaRequest createCartaDelDiaRequest (String menuComunP, String menuVegetarianoP, DiaSemana diaSemana) {
         CartaDelDiaRequest cartaDelDiaRequest = new CartaDelDiaRequest();
 
         cartaDelDiaRequest.setMenuComun(this.menuService.getProductsByName(menuComunP).get(0));
         cartaDelDiaRequest.setMenuVegetariano(this.menuService.getProductsByName(menuVegetarianoP).get(0));
         cartaDelDiaRequest.setDiaSemana(diaSemana);
-        cartaDelDiaRequest.setFechaInicio(fechaInicio);
-        cartaDelDiaRequest.setFechaFin(fechaFin);
         cartaDelDiaRequest.setCartaSemanal(null);
 
         return cartaDelDiaRequest;
@@ -178,10 +170,7 @@ public class CartaDelDiaServiceTest {
         cartaDelDiaRequest.setMenuComun(this.menuService.getProductsByName("Menu Martes Comun").get(0));
         cartaDelDiaRequest.setMenuVegetariano(this.menuService.getProductsByName("Menu Martes Vegano").get(0));
         cartaDelDiaRequest.setDiaSemana(DiaSemana.MARTES);
-        cartaDelDiaRequest.setFechaInicio(LocalDate.of(2021, 10, 1));
-        cartaDelDiaRequest.setFechaFin(LocalDate.of(2021, 10, 7));
         cartaDelDiaRequest.setCartaSemanal(null);
-
         this.cartaDelDiaService.update(cartaDelDia.getId(), cartaDelDiaRequest);
         this.testQueryAndValidateCartaDelDiaById(cartaDelDia.getId(), cartaDelDiaRequest);
     }

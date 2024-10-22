@@ -144,8 +144,6 @@ public class CartaSemanalServiceTest {
         cartaDelDiaRequest.setMenuComun(this.menuService.getProductsByName(menuComunP).get(0));
         cartaDelDiaRequest.setMenuVegetariano(this.menuService.getProductsByName(menuVegetarianoP).get(0));
         cartaDelDiaRequest.setDiaSemana(diaSemana);
-        cartaDelDiaRequest.setFechaInicio(fechaInicio);
-        cartaDelDiaRequest.setFechaFin(fechaFin);
         cartaDelDiaRequest.setCartaSemanal(null);
 
         return cartaDelDiaRequest;
@@ -206,8 +204,6 @@ public class CartaSemanalServiceTest {
 
         for (int i = 0; i < cartaSemanalRequest.getCartasDelDia().size(); i++) {
             assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getDiaSemana(), cartaSemanal.getCartas().get(i).getDiaSemana());
-            assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getFechaInicio(), cartaSemanal.getCartas().get(i).getFechaInicio());
-            assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getFechaFin(), cartaSemanal.getCartas().get(i).getFechaFin());
             assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getMenuComun().getId(), cartaSemanal.getCartas().get(i).getMenuComun().getId());
             assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getMenuVegetariano().getId(), cartaSemanal.getCartas().get(i).getMenuVegetariano().getId());
         }
