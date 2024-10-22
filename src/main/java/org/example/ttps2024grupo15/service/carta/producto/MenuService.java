@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.service.carta.menu;
+package org.example.ttps2024grupo15.service.carta.producto;
 
 import org.example.ttps2024grupo15.dao.menu.MenuDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;

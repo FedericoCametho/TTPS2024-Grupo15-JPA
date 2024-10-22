@@ -6,11 +6,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "menu")
 public class Menu extends ProductoComercializable {
 
-    @ManyToMany(mappedBy = "menues", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "menues", fetch = FetchType.LAZY)
     private List<Comida> comidas;
-    @ManyToMany(mappedBy = "menues",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "menues", fetch = FetchType.LAZY)
     private List<Compra> compras;
 
     public Menu(String titulo, Double precio, List<Comida> comidas, byte[] foto) {

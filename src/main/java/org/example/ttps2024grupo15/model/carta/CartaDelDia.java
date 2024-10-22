@@ -10,9 +10,9 @@ public class CartaDelDia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Menu menuVegetariano;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Menu menuComun;
     private DiaSemana diaSemana;
     private LocalDate fechaInicio;

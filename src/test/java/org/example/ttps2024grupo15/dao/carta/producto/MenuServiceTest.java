@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao.carta.menu;
+package org.example.ttps2024grupo15.dao.carta.producto;
 
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.menu.impl.MenuDAOHibernateJPA;
@@ -7,15 +7,14 @@ import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;
 import org.example.ttps2024grupo15.controller.request.carta.menu.producto.ComidaRequest;
 import org.example.ttps2024grupo15.controller.request.carta.menu.producto.MenuRequest;
-import org.example.ttps2024grupo15.service.carta.menu.ComidaService;
-import org.example.ttps2024grupo15.service.carta.menu.MenuService;
+import org.example.ttps2024grupo15.service.carta.producto.ComidaService;
+import org.example.ttps2024grupo15.service.carta.producto.MenuService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,7 +105,7 @@ public class MenuServiceTest {
     @Order(7)
     public void testDeleteAllMenuOk(){
         List<Menu> menues = this.menuService.getAll();
-        List<Comida> comidas = menues.stream().flatMap(menu -> menu.getComidas().stream()).collect(Collectors.toList());
+        List<Comida> comidas = this.comidaService.getAll();
         for(Comida comida : comidas){
             this.comidaService.delete(comida);
         }
