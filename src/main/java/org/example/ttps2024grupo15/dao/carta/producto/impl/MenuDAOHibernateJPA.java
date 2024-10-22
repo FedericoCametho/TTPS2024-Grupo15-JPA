@@ -64,7 +64,6 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
         }
     }
 
-
     @Override
     public List<Menu> findByNombre(String nombre) {
         EntityManager em = EMF.getEMF().createEntityManager();
@@ -77,5 +76,7 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
             em.close();
         }
     }
+
+
 
 }

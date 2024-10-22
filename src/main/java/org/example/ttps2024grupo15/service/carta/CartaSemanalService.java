@@ -27,11 +27,6 @@ public class CartaSemanalService {
         }
     }
 
-//    private void sanitize(CartaSemanalRequest cartaSemanal) {
-//        if (cartaSemanal.getCartasDelDia() == null) {
-//            throw new IllegalArgumentException("Cartas del dia son requeridas");
-//        }
-//    }
 
     public CartaSemanal createCartaSemanal(CartaSemanalRequest cartaSemanalRequest) {
         CartaSemanal cartaSemanal = new CartaSemanal();
