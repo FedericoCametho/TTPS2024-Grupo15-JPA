@@ -7,7 +7,6 @@ import org.example.ttps2024grupo15.dao.carta.cartaDelDia.CartaDelDiaDAO;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class CartaDelDiaService  {
@@ -47,19 +46,11 @@ public class CartaDelDiaService  {
         if (cartaDelDiaRequest.getDiaSemana() == null) {
             throw new IllegalArgumentException("Dia de la semana es requerido");
         }
-        if (cartaDelDiaRequest.getFechaInicio() == null) {
-            throw new IllegalArgumentException("Fecha de inicio es requerida");
-        }
-        if (cartaDelDiaRequest.getFechaFin() == null) {
-            throw new IllegalArgumentException("Fecha de fin es requerida");
-        }
     }
 
     public CartaDelDia createCartaDelDia(CartaDelDiaRequest cartaDelDiaRequest) {
         CartaDelDia cartaDelDia = new CartaDelDia();
         cartaDelDia.setDiaSemana(cartaDelDiaRequest.getDiaSemana());
-        cartaDelDia.setFechaFin(cartaDelDiaRequest.getFechaFin());
-        cartaDelDia.setFechaInicio(cartaDelDiaRequest.getFechaInicio());
         cartaDelDia.setMenuComun(cartaDelDiaRequest.getMenuComun());
         cartaDelDia.setMenuVegetariano(cartaDelDiaRequest.getMenuVegetariano());
         return cartaDelDia;
@@ -82,8 +73,6 @@ public class CartaDelDiaService  {
         this.sanitize(cartaDelDiaRequest);
         CartaDelDia cartaDelDia = this.getById(id);
         cartaDelDia.setDiaSemana(cartaDelDiaRequest.getDiaSemana());
-        cartaDelDia.setFechaFin(cartaDelDiaRequest.getFechaFin());
-        cartaDelDia.setFechaInicio(cartaDelDiaRequest.getFechaInicio());
         cartaDelDia.setMenuComun(cartaDelDiaRequest.getMenuComun());
         cartaDelDia.setMenuVegetariano(cartaDelDiaRequest.getMenuVegetariano());
         this.cartaDelDiaDAO.update(cartaDelDia);
