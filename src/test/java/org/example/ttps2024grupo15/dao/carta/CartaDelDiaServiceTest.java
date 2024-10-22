@@ -1,8 +1,8 @@
 package org.example.ttps2024grupo15.dao.carta;
 
-import org.example.ttps2024grupo15.controller.request.carta.menu.CartaDelDiaRequest;
-import org.example.ttps2024grupo15.controller.request.carta.menu.producto.ComidaRequest;
-import org.example.ttps2024grupo15.controller.request.carta.menu.producto.MenuRequest;
+import org.example.ttps2024grupo15.controller.request.carta.CartaDelDiaRequest;
+import org.example.ttps2024grupo15.controller.request.carta.producto.ComidaRequest;
+import org.example.ttps2024grupo15.controller.request.carta.producto.MenuRequest;
 import org.example.ttps2024grupo15.dao.menu.carta.cartaDelDia.CartaDelDiaDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.menu.carta.cartaSemanal.CartaSemanalDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;

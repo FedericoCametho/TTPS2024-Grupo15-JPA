@@ -3,7 +3,7 @@ package org.example.ttps2024grupo15.service.carta.producto;
 import org.example.ttps2024grupo15.dao.menu.MenuDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
-import org.example.ttps2024grupo15.controller.request.carta.menu.producto.MenuRequest;
+import org.example.ttps2024grupo15.controller.request.carta.producto.MenuRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
