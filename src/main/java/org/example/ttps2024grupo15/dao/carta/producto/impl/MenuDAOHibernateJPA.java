@@ -1,9 +1,9 @@
-package org.example.ttps2024grupo15.dao.menu.impl;
+package org.example.ttps2024grupo15.dao.carta.producto.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
-import org.example.ttps2024grupo15.dao.menu.MenuDAO;
+import org.example.ttps2024grupo15.dao.carta.producto.MenuDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 

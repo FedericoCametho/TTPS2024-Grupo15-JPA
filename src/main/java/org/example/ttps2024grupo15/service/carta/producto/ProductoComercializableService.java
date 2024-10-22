@@ -2,7 +2,7 @@ package org.example.ttps2024grupo15.service.carta.producto;
 
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
-import org.example.ttps2024grupo15.dao.menu.ProductoComercializableDAO;
+import org.example.ttps2024grupo15.dao.carta.producto.ProductoComercializableDAO;
 import org.example.ttps2024grupo15.model.carta.producto.ProductoComercializable;
 import org.example.ttps2024grupo15.controller.request.carta.producto.ProductoComercializableRequest;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;

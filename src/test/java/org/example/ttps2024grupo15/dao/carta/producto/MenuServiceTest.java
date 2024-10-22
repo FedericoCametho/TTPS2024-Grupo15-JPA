@@ -1,7 +1,7 @@
 package org.example.ttps2024grupo15.dao.carta.producto;
 
-import org.example.ttps2024grupo15.dao.menu.impl.ComidaDAOHibernateJPA;
-import org.example.ttps2024grupo15.dao.menu.impl.MenuDAOHibernateJPA;
+import org.example.ttps2024grupo15.dao.carta.producto.impl.ComidaDAOHibernateJPA;
+import org.example.ttps2024grupo15.dao.carta.producto.impl.MenuDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.carta.producto.TipoComida;

@@ -1,7 +1,7 @@
 package org.example.ttps2024grupo15.service.carta;
 
 import org.example.ttps2024grupo15.controller.request.carta.CartaSemanalRequest;
-import org.example.ttps2024grupo15.dao.menu.carta.cartaSemanal.CartaSemanalDAO;
+import org.example.ttps2024grupo15.dao.carta.cartaSemanal.CartaSemanalDAO;
 import org.example.ttps2024grupo15.model.carta.CartaSemanal;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 

@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao.menu.carta.cartaSemanal;
+package org.example.ttps2024grupo15.dao.carta.cartaSemanal;
 
 import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.carta.CartaSemanal;
