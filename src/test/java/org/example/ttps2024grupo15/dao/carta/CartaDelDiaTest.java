@@ -102,6 +102,16 @@ public class CartaDelDiaTest {
                         this.comidaService.getProductsByName("Pasta").get(0),
                         this.comidaService.getProductsByName("Ensalada").get(0),
                         this.comidaService.getProductsByName("Manzana").get(0))
+                )),
+                Arguments.of(this.createMenuRequest("Menu Martes Comun", 4500.0, List.of(
+                        this.comidaService.getProductsByName("Milanesa").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Helado").get(0))
+                )),
+                Arguments.of(this.createMenuRequest("Menu Martes Vegano", 3500.0, List.of(
+                        this.comidaService.getProductsByName("Pasta").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Manzana").get(0))
                 ))
         );
     }
@@ -160,7 +170,6 @@ public class CartaDelDiaTest {
     }
 
 
-
     @Test
     @Order(4)
     public void testGetAllCartasDelDia() {
@@ -168,6 +177,35 @@ public class CartaDelDiaTest {
         assertNotNull(cartasDelDia);
         assertEquals(1, cartasDelDia.size());
     }
+
+    @Test
+    @Order(5)
+    public void testUpdateCartaDelDia() {
+        CartaDelDia cartaDelDia = this.cartaDelDiaService.getAll().get(0);
+        CartaDelDiaRequest cartaDelDiaRequest = new CartaDelDiaRequest();
+        cartaDelDiaRequest.setMenuComun(this.menuService.getProductsByName("Menu Martes Comun").get(0));
+        cartaDelDiaRequest.setMenuVegetariano(this.menuService.getProductsByName("Menu Martes Vegano").get(0));
+        cartaDelDiaRequest.setDiaSemana(DiaSemana.MARTES);
+        cartaDelDiaRequest.setFechaInicio(LocalDate.of(2021, 10, 1));
+        cartaDelDiaRequest.setFechaFin(LocalDate.of(2021, 10, 7));
+        cartaDelDiaRequest.setCartaSemanal(null);
+
+        this.cartaDelDiaService.update(cartaDelDia.getId(), cartaDelDiaRequest);
+        this.testQueryAndValidateCartaDelDiaById(cartaDelDia.getId(), cartaDelDiaRequest);
+    }
+
+    @Test
+    @Order(6)
+    public void testDeleteCartaDelDiaById() {
+        List<CartaDelDia> cartasDelDia = this.cartaDelDiaService.getAll();
+        assertNotNull(cartasDelDia);
+        assertEquals(1, cartasDelDia.size());
+        this.cartaDelDiaService.delete(cartasDelDia.get(0).getId());
+        cartasDelDia = this.cartaDelDiaService.getAll();
+        assertNotNull(cartasDelDia);
+        assertEquals(0, cartasDelDia.size());
+    }
+
 
     @AfterAll
     public void deleteAllTest(){

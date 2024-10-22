@@ -1,10 +1,13 @@
 package org.example.ttps2024grupo15.service.carta;
 
+import jakarta.persistence.NoResultException;
+import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.controller.request.carta.CartaDelDiaRequest;
 import org.example.ttps2024grupo15.dao.carta.cartaDelDia.CartaDelDiaDAO;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class CartaDelDiaService  {
@@ -62,12 +65,32 @@ public class CartaDelDiaService  {
         return cartaDelDia;
     }
 
-    public CartaDelDia update(CartaDelDia cartaDelDia) {
-        return cartaDelDiaDAO.update(cartaDelDia);
+    @Transactional
+    public void delete(Long id) {
+        RequestValidatorHelper.validateID(id);
+        try{
+            this.cartaDelDiaDAO.delete(id);
+        } catch (NoResultException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("La carta del dia no existe");
+        }
     }
 
-    public void delete(Long id) {
-        cartaDelDiaDAO.delete(id);
+    @Transactional
+    public void update(Long id, CartaDelDiaRequest cartaDelDiaRequest) {
+        RequestValidatorHelper.validateID(id);
+        this.sanitize(cartaDelDiaRequest);
+        CartaDelDia cartaDelDia = this.getById(id);
+        cartaDelDia.setDiaSemana(cartaDelDiaRequest.getDiaSemana());
+        cartaDelDia.setFechaFin(cartaDelDiaRequest.getFechaFin());
+        cartaDelDia.setFechaInicio(cartaDelDiaRequest.getFechaInicio());
+        cartaDelDia.setMenuComun(cartaDelDiaRequest.getMenuComun());
+        cartaDelDia.setMenuVegetariano(cartaDelDiaRequest.getMenuVegetariano());
+        this.cartaDelDiaDAO.update(cartaDelDia);
+    }
+
+    public CartaDelDia update(CartaDelDia cartaDelDia) {
+        return cartaDelDiaDAO.update(cartaDelDia);
     }
 
     public List<CartaDelDia> getAll() {
