@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao.menu;
+package org.example.ttps2024grupo15.dao.carta.producto;
 
 import org.example.ttps2024grupo15.dao.GenericDAO;
 import org.example.ttps2024grupo15.model.carta.producto.ProductoComercializable;

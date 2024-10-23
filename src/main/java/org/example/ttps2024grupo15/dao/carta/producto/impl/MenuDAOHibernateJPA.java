@@ -1,9 +1,9 @@
-package org.example.ttps2024grupo15.dao.menu.impl;
+package org.example.ttps2024grupo15.dao.carta.producto.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
-import org.example.ttps2024grupo15.dao.menu.MenuDAO;
+import org.example.ttps2024grupo15.dao.carta.producto.MenuDAO;
 import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 
@@ -47,5 +47,36 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
         }
         return menu;
     }
+
+    @Override
+    public Menu getById(Long id) {
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery(
+                            "SELECT m FROM Menu m JOIN FETCH m.comidas WHERE m.id = :id", this.clasePersistente)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Menu> findByNombre(String nombre) {
+        EntityManager em = EMF.getEMF().createEntityManager();
+        try{
+            return em.createQuery("SELECT m FROM Menu m JOIN FETCH m.comidas WHERE m.nombre LIKE :nombre", this.clasePersistente).setParameter("nombre","%"+nombre+"%").getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+
 
 }

@@ -1,9 +1,9 @@
-package org.example.ttps2024grupo15.dao.menu.impl;
+package org.example.ttps2024grupo15.dao.carta.producto.impl;
 
 import jakarta.persistence.EntityManager;
 import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
-import org.example.ttps2024grupo15.dao.menu.ProductoComercializableDAO;
+import org.example.ttps2024grupo15.dao.carta.producto.ProductoComercializableDAO;
 import org.example.ttps2024grupo15.model.carta.producto.ProductoComercializable;
 
 import java.util.List;

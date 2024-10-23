@@ -10,10 +10,12 @@ public class CartaSemanal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "cartaSemanal")
+    private String nombre;
+    @OneToMany(mappedBy = "cartaSemanal", fetch = FetchType.EAGER)
     private List<CartaDelDia> cartas;
 
-    public CartaSemanal(List<CartaDelDia> cartas) {
+    public CartaSemanal(List<CartaDelDia> cartas, String nombre) {
+        this.nombre = nombre;
         this.cartas = this.sanitizeCartasConstructor(cartas);
     }
     public CartaSemanal() {
@@ -33,7 +35,7 @@ public class CartaSemanal {
         this.cartas.add(carta);
     }
     public List<CartaDelDia> sanitizeCartasConstructor(List<CartaDelDia> cartas) {
-        return cartas.size() <= 7 ? cartas : cartas.subList(0, 7);
+        return cartas.size() <= 5 ? cartas : cartas.subList(0, 4);
     }
 
     public Long getId() {
@@ -44,4 +46,11 @@ public class CartaSemanal {
         this.cartas = cartas;
     }
 
+    public void setNombre(String nombre){
+        this.nombre = nombre;
+    }
+
+    public String getNombre(){
+        return this.nombre;
+    }
 }

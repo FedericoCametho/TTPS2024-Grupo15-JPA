@@ -3,6 +3,7 @@ package org.example.ttps2024grupo15.dao.sugerencia;
 import jakarta.persistence.EntityManager;
 import org.example.ttps2024grupo15.dao.GenericDAOHibernateJPA;
 import org.example.ttps2024grupo15.dao.entitiManager.EMF;
+
 import org.example.ttps2024grupo15.model.sugerencia.Sugerencia;
 import org.example.ttps2024grupo15.model.sugerencia.TipoSugerencia;
 
