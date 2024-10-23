@@ -5,10 +5,12 @@ import jakarta.transaction.Transactional;
 import org.example.ttps2024grupo15.controller.request.carta.CartaDelDiaRequest;
 import org.example.ttps2024grupo15.dao.carta.cartaDelDia.CartaDelDiaDAO;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
+import org.example.ttps2024grupo15.model.carta.CartaSemanal;
 import org.example.ttps2024grupo15.model.carta.DiaSemana;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.List;
+import java.util.Set;
 
 public class CartaDelDiaService  {
     private CartaDelDiaDAO cartaDelDiaDAO;
@@ -85,6 +87,30 @@ public class CartaDelDiaService  {
 
     public List<CartaDelDia> getAll() {
         return cartaDelDiaDAO.getAll();
+    }
+
+    public List<CartaDelDia> getCartaDelDiaByDiaSemana(DiaSemana diaSemana) {
+        return cartaDelDiaDAO.getCartaDelDiaByDiaSemana(diaSemana);
+    }
+
+    @Transactional
+    public CartaDelDia updateCartaSemanalRelation(CartaSemanal cartaSemanal, Long cartaDelDiaId){
+        CartaDelDia cartaDelDia = this.getById(cartaDelDiaId);
+        cartaDelDia.setCartaSemanal(cartaSemanal);
+        return this.cartaDelDiaDAO.update(cartaDelDia);
+    }
+
+    @Transactional
+    public void eliminarRelacionConCartaSemanal(Set<Long> idsCartasDelDia){
+        try{
+            idsCartasDelDia.forEach(id -> {
+                    CartaDelDia cartaDelDia = this.getById(id);
+                    cartaDelDia.setCartaSemanal(null);
+                    this.cartaDelDiaDAO.update(cartaDelDia);
+            });
+        }catch(Exception e){
+            throw new IllegalArgumentException("Error al eliminar la relacion con la carta semanal");
+        }
     }
 
 }

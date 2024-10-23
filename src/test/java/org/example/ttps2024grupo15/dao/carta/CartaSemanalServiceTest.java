@@ -23,12 +23,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -57,7 +57,7 @@ public class CartaSemanalServiceTest {
         this.cartaDelDiaService = new CartaDelDiaService(cartaDelDiaDAO);
 
         this.cartaSemanalDAO = new CartaSemanalDAOHibernateJPA();
-        this.cartaSemanalService = new CartaSemanalService(cartaSemanalDAO);
+        this.cartaSemanalService = new CartaSemanalService(cartaSemanalDAO, cartaDelDiaService);
     }
 
     @ParameterizedTest
@@ -125,6 +125,26 @@ public class CartaSemanalServiceTest {
                         this.comidaService.getProductsByName("Pasta").get(0),
                         this.comidaService.getProductsByName("Ensalada").get(0),
                         this.comidaService.getProductsByName("Manzana").get(0))
+                )),
+                Arguments.of(this.createMenuRequest("Menu Jueves Comun", 4500.0, List.of(
+                        this.comidaService.getProductsByName("Milanesa").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Helado").get(0))
+                )),
+                Arguments.of(this.createMenuRequest("Menu Jueves Vegano", 3500.0, List.of(
+                        this.comidaService.getProductsByName("Pasta").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Manzana").get(0))
+                )),
+                Arguments.of(this.createMenuRequest("Menu Viernes Comun", 4500.0, List.of(
+                        this.comidaService.getProductsByName("Milanesa").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Helado").get(0))
+                )),
+                Arguments.of(this.createMenuRequest("Menu Viernes Vegano", 3500.0, List.of(
+                        this.comidaService.getProductsByName("Pasta").get(0),
+                        this.comidaService.getProductsByName("Ensalada").get(0),
+                        this.comidaService.getProductsByName("Manzana").get(0))
                 ))
         );
     }
@@ -138,7 +158,7 @@ public class CartaSemanalServiceTest {
         return menuRequest;
     }
 
-    private CartaDelDiaRequest createCartaDelDiaRequest(String menuComunP, String menuVegetarianoP, DiaSemana diaSemana, LocalDate fechaInicio, LocalDate fechaFin) {
+    private CartaDelDiaRequest createCartaDelDiaRequest(String menuComunP, String menuVegetarianoP, DiaSemana diaSemana) {
         CartaDelDiaRequest cartaDelDiaRequest = new CartaDelDiaRequest();
 
         cartaDelDiaRequest.setMenuComun(this.menuService.getProductsByName(menuComunP).get(0));
@@ -158,13 +178,13 @@ public class CartaSemanalServiceTest {
     }
 
     private Stream<Arguments> createCartaDelDiaRequestWithData() {
-        LocalDate fechaInicio = LocalDate.of(2021, 10, 1);
-        LocalDate fechaFin = LocalDate.of(2021, 10, 7);
 
         return Stream.of(
-                Arguments.of(this.createCartaDelDiaRequest("Menu Lunes Comun", "Menu Lunes Vegano", DiaSemana.LUNES, fechaInicio, fechaFin)),
-                Arguments.of(this.createCartaDelDiaRequest("Menu Martes Comun", "Menu Martes Vegano", DiaSemana.MARTES, fechaInicio, fechaFin)),
-                Arguments.of(this.createCartaDelDiaRequest("Menu Miercoles Comun", "Menu Miercoles Vegano", DiaSemana.MIERCOLES, fechaInicio, fechaFin))
+                Arguments.of(this.createCartaDelDiaRequest("Menu Lunes Comun", "Menu Lunes Vegano", DiaSemana.LUNES)),
+                Arguments.of(this.createCartaDelDiaRequest("Menu Martes Comun", "Menu Martes Vegano", DiaSemana.MARTES)),
+                Arguments.of(this.createCartaDelDiaRequest("Menu Miercoles Comun", "Menu Miercoles Vegano", DiaSemana.MIERCOLES)),
+                Arguments.of(this.createCartaDelDiaRequest("Menu Jueves Comun", "Menu Jueves Vegano", DiaSemana.JUEVES)),
+                Arguments.of(this.createCartaDelDiaRequest("Menu Viernes Comun", "Menu Viernes Vegano", DiaSemana.VIERNES))
         );
 
     }
@@ -174,27 +194,24 @@ public class CartaSemanalServiceTest {
     @Order(4)
     public void testCreateCartaSemanal(CartaSemanalRequest cartaSemanalRequest) {
         CartaSemanal cartaSemanal = this.cartaSemanalService.save(cartaSemanalRequest);
-
-        for (CartaDelDia cartaDelDia : cartaSemanal.getCartas()) {
-            cartaDelDia.setCartaSemanal(cartaSemanal);
-            this.cartaDelDiaDAO.update(cartaDelDia);
-        }
-
         this.testQueryAndValidateCartaSemanalById(cartaSemanal.getId(), cartaSemanalRequest);
-
     }
 
     private Stream<Arguments> createCartaSemanalRequestWithData() {
         return Stream.of(
-                Arguments.of(this.createCartaSemanalRequest(List.of(
-                                this.cartaDelDiaDAO.getCartaDelDiaByDiaSemana(DiaSemana.LUNES).get(0),
-                                this.cartaDelDiaDAO.getCartaDelDiaByDiaSemana(DiaSemana.MARTES).get(0)
+                Arguments.of(this.createCartaSemanalRequest("Carta de Navidad",List.of(
+                                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.LUNES).get(0),
+                                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.MARTES).get(0),
+                                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.MIERCOLES).get(0),
+                                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.JUEVES).get(0),
+                                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.VIERNES).get(0)
                         ))
                 ));
     }
 
-    private CartaSemanalRequest createCartaSemanalRequest(List<CartaDelDia> cartasDelDia) {
+    private CartaSemanalRequest createCartaSemanalRequest(String nombre, List<CartaDelDia> cartasDelDia) {
         CartaSemanalRequest cartaSemanalRequest = new CartaSemanalRequest();
+        cartaSemanalRequest.setNombre(nombre);
         cartaSemanalRequest.setCartasDelDia(cartasDelDia);
         return cartaSemanalRequest;
     }
@@ -202,41 +219,34 @@ public class CartaSemanalServiceTest {
     private void testQueryAndValidateCartaSemanalById(Long id, CartaSemanalRequest cartaSemanalRequest) {
         CartaSemanal cartaSemanal = this.cartaSemanalService.getById(id);
 
-        for (int i = 0; i < cartaSemanalRequest.getCartasDelDia().size(); i++) {
-            assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getDiaSemana(), cartaSemanal.getCartas().get(i).getDiaSemana());
-            assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getMenuComun().getId(), cartaSemanal.getCartas().get(i).getMenuComun().getId());
-            assertEquals(cartaSemanalRequest.getCartasDelDia().get(i).getMenuVegetariano().getId(), cartaSemanal.getCartas().get(i).getMenuVegetariano().getId());
-        }
+        assertNotNull(cartaSemanal);
+        assertEquals(5, cartaSemanal.getCartas().size());
 
+        Set<Long> requestCartasDelDiaIds = cartaSemanalRequest.getCartasDelDia().stream().map(CartaDelDia::getId).collect(Collectors.toSet());
+        Set<Long> cartasDelDiaIds = cartaSemanal.getCartas().stream().map(CartaDelDia::getId).collect(Collectors.toSet());
+        assertEquals(requestCartasDelDiaIds, cartasDelDiaIds);
     }
 
     @Test
     @Order(5)
     public void testUpdateCartaSemanal() {
+        CartaDelDia cartaDelDia = this.cartaDelDiaService.save(createCartaDelDiaRequest("Menu Miercoles Comun", "Menu Miercoles Vegano", DiaSemana.LUNES));
         CartaSemanal cartaSemanal = this.cartaSemanalService.getAll().get(0);
         CartaSemanalRequest cartaSemanalRequest = new CartaSemanalRequest();
+        cartaSemanalRequest.setNombre(cartaSemanal.getNombre());
         cartaSemanalRequest.setCartasDelDia(List.of(
-                this.cartaDelDiaDAO.getCartaDelDiaByDiaSemana(DiaSemana.LUNES).get(0),
-                this.cartaDelDiaDAO.getCartaDelDiaByDiaSemana(DiaSemana.MARTES).get(0),
-                this.cartaDelDiaDAO.getCartaDelDiaByDiaSemana(DiaSemana.MIERCOLES).get(0)
+                this.cartaDelDiaService.getById(cartaDelDia.getId()),
+                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.MARTES).get(0),
+                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.MIERCOLES).get(0),
+                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.JUEVES).get(0),
+                this.cartaDelDiaService.getCartaDelDiaByDiaSemana(DiaSemana.VIERNES).get(0)
         ));
 
-        this.cartaSemanalService.update(cartaSemanal.getId(), cartaSemanalRequest);
 
-        for (CartaDelDia cartaDelDia : cartaSemanalRequest.getCartasDelDia()) {
-            cartaDelDia.setCartaSemanal(cartaSemanal);
-            this.cartaDelDiaDAO.update(cartaDelDia);
-        }
-
-        this.testQueryAndValidateCartaSemanalById(cartaSemanal.getId(), cartaSemanalRequest);
+        CartaSemanal cartaSemanalUpdate = this.cartaSemanalService.update(cartaSemanal.getId(), cartaSemanalRequest);
+        this.testQueryAndValidateCartaSemanalById(cartaSemanalUpdate.getId(), cartaSemanalRequest);
     }
 
-    @Test
-    @Order(6)
-    public void testGellAllCartasDelDia() {
-        CartaSemanal cartaSemanal = this.cartaSemanalService.getAll().get(0);
-        assertEquals(3, cartaSemanal.getCartas().size());
-    }
 
     @AfterAll
     public void deleteAll(){
