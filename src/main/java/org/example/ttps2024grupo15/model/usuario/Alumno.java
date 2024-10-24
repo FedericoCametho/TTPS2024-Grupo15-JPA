@@ -12,13 +12,13 @@ import java.util.List;
 
 @Entity
 public class Alumno extends Usuario {
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<Compra> compras;
     private Boolean habilitado;
     @Lob
     private byte[] fotoDePerfil;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER)
     private List<Sugerencia> sugerencias;
 
 

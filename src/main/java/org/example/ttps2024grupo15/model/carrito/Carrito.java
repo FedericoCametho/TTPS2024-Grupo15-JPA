@@ -4,7 +4,7 @@ import org.example.ttps2024grupo15.model.carta.producto.Comida;
 import org.example.ttps2024grupo15.model.carta.producto.Menu;
 import org.example.ttps2024grupo15.model.carta.producto.ProductoComercializable;
 import org.example.ttps2024grupo15.model.usuario.Alumno;
-import jakarta.persistence.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,4 +70,5 @@ public class Carrito {
     public void setComidas(List<Comida> comidas) {
         this.comidas = comidas;
     }
+
 }
