@@ -8,9 +8,10 @@ import org.example.ttps2024grupo15.dao.usuario.AlumnoDAO;
 import org.example.ttps2024grupo15.model.usuario.Alumno;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AlumnoDAOHibernateJPA extends UsuarioDAOHibernateJPA<Alumno> implements AlumnoDAO {
-
+    private static final Logger LOGGER = Logger.getLogger(AlumnoDAOHibernateJPA.class.getName());
 
     public AlumnoDAOHibernateJPA() {
         super(Alumno.class);
@@ -23,7 +24,7 @@ public class AlumnoDAOHibernateJPA extends UsuarioDAOHibernateJPA<Alumno> implem
         try {
             return em.createQuery("SELECT a FROM Alumno a WHERE a.habilitado = :habilitado", Alumno.class).setParameter("habilitado", true).getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();

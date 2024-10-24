@@ -7,8 +7,10 @@ import org.example.ttps2024grupo15.model.usuario.ResponsableDeTurno;
 import org.example.ttps2024grupo15.model.usuario.Turno;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ResponsableDeTurnoDAOHibernateJPA  extends UsuarioDAOHibernateJPA<ResponsableDeTurno> implements ResponsableDeTurnoDAO {
+    private static final Logger LOGGER = Logger.getLogger(ResponsableDeTurnoDAOHibernateJPA.class.getName());
     public ResponsableDeTurnoDAOHibernateJPA() {
         super(ResponsableDeTurno.class);
     }
@@ -20,7 +22,7 @@ public class ResponsableDeTurnoDAOHibernateJPA  extends UsuarioDAOHibernateJPA<R
         try {
             return em.createQuery("SELECT r FROM ResponsableDeTurno r WHERE r.turno = :turno", ResponsableDeTurno.class).setParameter("turno", turno).getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe("Error al buscar responsables de turno por turno");
             throw e;
         } finally {
             em.close();

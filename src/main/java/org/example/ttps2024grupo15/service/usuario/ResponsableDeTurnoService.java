@@ -6,9 +6,10 @@ import org.example.ttps2024grupo15.model.usuario.ResponsableDeTurno;
 import org.example.ttps2024grupo15.model.usuario.Turno;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ResponsableDeTurnoService extends UsuarioService<ResponsableDeTurno, ResponsableDeTurnoDAO, ResponsableDeTurnoRequest> {
-
+    private static final Logger LOGGER = Logger.getLogger(ResponsableDeTurnoService.class.getName());
 
     public ResponsableDeTurnoService(ResponsableDeTurnoDAO responsableDeTurnoDAO) {
         super(responsableDeTurnoDAO);
@@ -21,6 +22,7 @@ public class ResponsableDeTurnoService extends UsuarioService<ResponsableDeTurno
     @Override
     protected void sanitizeRequestSpecificFields(ResponsableDeTurnoRequest usuarioRequest) {
         if(usuarioRequest.getTurno() == null){
+            LOGGER.info("ERROR EN EL REQUEST: El turno es requerido");
             throw new IllegalArgumentException("El turno es requerido y solo pueden ser MANANA o TARDE");
         }
     }

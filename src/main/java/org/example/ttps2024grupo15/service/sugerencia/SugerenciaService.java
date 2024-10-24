@@ -9,8 +9,10 @@ import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 import org.example.ttps2024grupo15.service.usuario.AlumnoService;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SugerenciaService {
+    private static final Logger LOGGER = Logger.getLogger(SugerenciaService.class.getName());
     private SugerenciaDAO sugerenciaDAO;
     private AlumnoService alumnoService;
     public SugerenciaService(SugerenciaDAO sugerenciaDAO, AlumnoService alumnoService) {
@@ -24,18 +26,21 @@ public class SugerenciaService {
         try{
             return this.sugerenciaDAO.save(sugerencia);
         } catch (Exception e){
+            LOGGER.info("Error al guardar sugerencia");
             throw new IllegalArgumentException("Error al guardar sugerencia");
         }
     }
 
     public List<Sugerencia> getSugerenciaByTipo(TipoSugerencia tipo){
         if (tipo == null){
+            LOGGER.info("ERROR: Tipo de sugerencia no puede ser nulo");
             throw new IllegalArgumentException("Tipo de sugerencia no puede ser nulo");
         }
 
         try{
             return this.sugerenciaDAO.getSugerenciasByTipo(tipo);
         } catch (Exception e){
+            LOGGER.info("No se encontro sugerencia con tipo: " + tipo);
             throw new IllegalArgumentException("No se encontro sugerencia con tipo: " + tipo);
         }
     }
@@ -46,6 +51,7 @@ public class SugerenciaService {
         try{
             return this.sugerenciaDAO.getById(id);
         } catch (Exception e){
+            LOGGER.info("No se encontro sugerencia con id: " + id);
             throw new IllegalArgumentException("No se encontro sugerencia con id: " + id);
         }
     }
@@ -59,6 +65,7 @@ public class SugerenciaService {
         try{
             this.sugerenciaDAO.delete(id);
         } catch (Exception e){
+            LOGGER.info("Error al eliminar sugerencia");
             throw new IllegalArgumentException("Error al eliminar sugerencia");
         }
     }
@@ -87,6 +94,7 @@ public class SugerenciaService {
         try{
             alumno = this.alumnoService.getUserById(sugerenciaRequest.getAlumnoId());
         } catch (Exception e){
+            LOGGER.info("No se encontro el alumno con id: " + sugerenciaRequest.getAlumnoId());
             throw new IllegalArgumentException("No se encontro el alumno con id: " + sugerenciaRequest.getAlumnoId());
         }
         sugerencia.setUsuario(alumno);

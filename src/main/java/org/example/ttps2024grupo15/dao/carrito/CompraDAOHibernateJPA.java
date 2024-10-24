@@ -7,8 +7,10 @@ import org.example.ttps2024grupo15.model.carrito.Compra;
 
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CompraDAOHibernateJPA extends GenericDAOHibernateJPA<Compra> implements CompraDAO {
+    private static final Logger LOGGER = Logger.getLogger(CompraDAOHibernateJPA.class.getName());
     public CompraDAOHibernateJPA() {
         super(Compra.class);
     }
@@ -25,7 +27,7 @@ public class CompraDAOHibernateJPA extends GenericDAOHibernateJPA<Compra> implem
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             entityManager.close();
@@ -39,7 +41,7 @@ public class CompraDAOHibernateJPA extends GenericDAOHibernateJPA<Compra> implem
             return entityManager.createQuery(
                 "SELECT c FROM Compra c JOIN FETCH c.usuario WHERE c.importe >= :precio", this.clasePersistente).setParameter("precio", precio).getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             entityManager.close();
@@ -53,7 +55,7 @@ public class CompraDAOHibernateJPA extends GenericDAOHibernateJPA<Compra> implem
             return entityManager.createQuery(
                     "SELECT c FROM Compra c JOIN FETCH c.usuario WHERE c.importe <= :precio", this.clasePersistente).setParameter("precio", precio).getResultList();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             entityManager.close();
@@ -66,7 +68,7 @@ public class CompraDAOHibernateJPA extends GenericDAOHibernateJPA<Compra> implem
         try{
             return entityManager.createQuery("SELECT c FROM Compra c JOIN FETCH c.usuario", this.clasePersistente).getResultList();
         }catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             entityManager.close();

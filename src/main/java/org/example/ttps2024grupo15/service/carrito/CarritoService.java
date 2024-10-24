@@ -3,8 +3,10 @@ package org.example.ttps2024grupo15.service.carrito;
 import org.example.ttps2024grupo15.model.carrito.Carrito;
 import org.example.ttps2024grupo15.model.carrito.Compra;
 
-public class CarritoService {
+import java.util.logging.Logger;
 
+public class CarritoService {
+    private static final Logger LOGGER = Logger.getLogger(CarritoService.class.getName());
     private CompraService compraService;
 
     public CarritoService(CompraService compraService){

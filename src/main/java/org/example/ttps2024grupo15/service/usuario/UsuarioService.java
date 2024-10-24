@@ -11,9 +11,10 @@ import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>, R extends UsuarioRequest> {
-
+    private static final Logger LOGGER = Logger.getLogger(UsuarioService.class.getName());
     protected S dao;
 
     public UsuarioService(S usuarioDAO) {
@@ -27,7 +28,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
             this.validarDuplicado(usuarioRequest);
             return this.dao.save(this.createUsuario(usuarioRequest));
         } catch (Exception e){
-            e.printStackTrace();
+            LOGGER.info("Error al guardar el usuario: " + e.getMessage());
             throw new IllegalArgumentException("Error al guardar el usuario");
         }
 
@@ -41,7 +42,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             user = this.dao.getById(id);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("El usuario no existe con el id: " + id);
             throw new IllegalArgumentException("El usuario no existe");
         }
         user.setNombre(usuarioRequest.getNombre());
@@ -58,7 +59,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             this.dao.delete(id);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("El usuario no existe con el id: " + id);
             throw new IllegalArgumentException("El usuario no existe");
         }
     }
@@ -70,7 +71,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             this.dao.delete(user);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("El usuario no existe con el id: " + user.getId());
             throw new IllegalArgumentException("El usuario no existe");
         }
     }
@@ -79,7 +80,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             return dao.getById(id);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("El usuario no existe con el id: " + id);
             throw new IllegalArgumentException("El usuario no existe");
         }
     }
@@ -89,7 +90,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             return dao.getUsuarioPorNombre(name);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("No se encontraron usuarios con el nombre: " + name);
             return new ArrayList<>();
         }
     }
@@ -99,7 +100,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             return dao.getUsuarioPorApellido(lastName);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("No se encontraron usuarios con el apellido: " + lastName);
             return new ArrayList<>();
         }
     }
@@ -109,7 +110,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             return dao.getByEmail(email);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("No se encontro usuario con el email: " + email);
             return null;
         }
     }
@@ -119,7 +120,7 @@ public abstract class UsuarioService<T extends Usuario, S extends UsuarioDAO<T>,
         try{
             return dao.getByDni(dni);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("No se encontro usuario con el dni: " + dni);
             return null;
         }
     }

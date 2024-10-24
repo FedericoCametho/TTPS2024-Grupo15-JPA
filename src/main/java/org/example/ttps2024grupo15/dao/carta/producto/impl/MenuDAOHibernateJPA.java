@@ -10,9 +10,11 @@ import org.example.ttps2024grupo15.model.carta.producto.Menu;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA<Menu> implements MenuDAO {
+    private static final Logger LOGGER = Logger.getLogger(MenuDAOHibernateJPA.class.getName());
     public MenuDAOHibernateJPA() {
         super(Menu.class);
     }
@@ -57,7 +59,7 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
                     .setParameter("id", id)
                     .getSingleResult();
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();
@@ -70,7 +72,7 @@ public class MenuDAOHibernateJPA  extends ProductoComercializableDAOHibernateJPA
         try{
             return em.createQuery("SELECT m FROM Menu m JOIN FETCH m.comidas WHERE m.nombre LIKE :nombre", this.clasePersistente).setParameter("nombre","%"+nombre+"%").getResultList();
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();

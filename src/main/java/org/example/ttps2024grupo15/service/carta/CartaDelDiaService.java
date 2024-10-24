@@ -11,8 +11,10 @@ import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class CartaDelDiaService  {
+    private static final Logger LOGGER = Logger.getLogger(CartaDelDiaService.class.getName());
     private CartaDelDiaDAO cartaDelDiaDAO;
 
     public CartaDelDiaService(CartaDelDiaDAO cartaDelDiaDAO) {
@@ -25,6 +27,7 @@ public class CartaDelDiaService  {
         try {
             return this.cartaDelDiaDAO.save(cartaDelDia);
         } catch (Exception e) {
+            LOGGER.info("Error al guardar la carta del dia");
             throw new IllegalArgumentException("Error al guardar la carta del dia");
         }
 
@@ -35,6 +38,7 @@ public class CartaDelDiaService  {
         try {
             return this.cartaDelDiaDAO.getById(id);
         } catch (Exception e) {
+            LOGGER.info("No se encontro carta del dia con id: " + id);
             throw new IllegalArgumentException("No se encontro carta del dia con id: " + id);
         }
     }
@@ -65,7 +69,7 @@ public class CartaDelDiaService  {
         try{
             this.cartaDelDiaDAO.delete(id);
         } catch (NoResultException e) {
-            e.printStackTrace();
+            LOGGER.info("La carta del dia no existe");
             throw new IllegalArgumentException("La carta del dia no existe");
         }
     }
@@ -95,9 +99,20 @@ public class CartaDelDiaService  {
 
     @Transactional
     public CartaDelDia updateCartaSemanalRelation(CartaSemanal cartaSemanal, Long cartaDelDiaId){
-        CartaDelDia cartaDelDia = this.getById(cartaDelDiaId);
-        cartaDelDia.setCartaSemanal(cartaSemanal);
-        return this.cartaDelDiaDAO.update(cartaDelDia);
+        CartaDelDia cartaDelDia;
+        try{
+            cartaDelDia = this.getById(cartaDelDiaId);
+        } catch (Exception e){
+            LOGGER.info("La carta del dia no existe");
+            throw new IllegalArgumentException("La carta del dia no existe");
+        }
+        try {
+            cartaDelDia.setCartaSemanal(cartaSemanal);
+            return this.cartaDelDiaDAO.update(cartaDelDia);
+        } catch (Exception e){
+            LOGGER.info("Error al actualizar la carta del dia");
+            throw new IllegalArgumentException("Error al actualizar la carta del dia");
+        }
     }
 
     @Transactional

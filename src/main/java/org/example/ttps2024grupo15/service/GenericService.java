@@ -5,8 +5,10 @@ import org.example.ttps2024grupo15.dao.GenericDAO;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class GenericService<T, S extends GenericDAO<T>>{
+    private static final Logger LOGGER = Logger.getLogger(GenericService.class.getName());
 
     protected S dao;
     public GenericService(S dao) {
@@ -17,7 +19,7 @@ public abstract class GenericService<T, S extends GenericDAO<T>>{
         try{
             return this.dao.getById(id);
         } catch (NoResultException e){
-            e.printStackTrace();
+            LOGGER.info("El Id no corresponde a una entidad existente");
             throw new IllegalArgumentException("El Id no corresponde a una entidad existente");
         }
     }
