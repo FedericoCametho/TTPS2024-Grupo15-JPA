@@ -1,13 +1,10 @@
-package org.example.ttps2024grupo15.dao.sugerencia;
+package org.example.ttps2024grupo15.service.sugerencia;
 
 import org.example.ttps2024grupo15.controller.request.sugerencia.SugerenciaRequest;
-import org.example.ttps2024grupo15.controller.request.usuario.AlumnoRequest;
-import org.example.ttps2024grupo15.dao.usuario.impl.AlumnoDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.sugerencia.Sugerencia;
 import org.example.ttps2024grupo15.model.sugerencia.TipoSugerencia;
 import org.example.ttps2024grupo15.model.usuario.Alumno;
-import org.example.ttps2024grupo15.service.sugerencia.SugerenciaService;
-import org.example.ttps2024grupo15.service.usuario.AlumnoService;
+import org.example.ttps2024grupo15.service.AbstractGenericTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,22 +16,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class SugerenciaServiceTest {
+public class SugerenciaServiceTest extends AbstractGenericTest {
 
-    private SugerenciaDAOHibernateJPA sugerenciaDAO;
-    private SugerenciaService sugerenciaService;
-    private AlumnoService alumnoService;
-    private AlumnoDAOHibernateJPA alumnoDAO;
-
-    @BeforeAll
-    public void setUp(){
-        this.sugerenciaDAO = new SugerenciaDAOHibernateJPA();
-        this.alumnoDAO = new AlumnoDAOHibernateJPA();
-        this.alumnoService = new AlumnoService(alumnoDAO);
-        this.sugerenciaService = new SugerenciaService(sugerenciaDAO, alumnoService);
-    }
     @ParameterizedTest
     @MethodSource("createSugerenciaRequestWithData")
     @Order(2)
@@ -78,6 +62,8 @@ public class SugerenciaServiceTest {
         assertEquals(0,sugerencias.size());
         List<Alumno> alumnos = this.alumnoService.getAll();
         alumnos.forEach(alumno -> this.alumnoService.delete(alumno.getId()));
+        alumnos = this.alumnoService.getAll();
+        assertEquals(0,alumnos.size());
     }
 
     private Stream<Arguments> createSugerenciaRequestWithData() {
@@ -86,38 +72,6 @@ public class SugerenciaServiceTest {
                 Arguments.of(this.createSugerenciaRequest("titulo2", TipoSugerencia.ALIMENTOS, "mensaje2", 22222222)),
                 Arguments.of(this.createSugerenciaRequest("titulo3", TipoSugerencia.INFRAESTRUCTURA, "mensaje3", 33333333))
         );
-    }
-
-    private SugerenciaRequest createSugerenciaRequest(String titulo, TipoSugerencia tipoSugerencia, String mensajeOriginal, int alumnoDni) {
-        SugerenciaRequest sugerenciaRequest = new SugerenciaRequest();
-        sugerenciaRequest.setTitulo(titulo);
-        sugerenciaRequest.setTipoSugerencia(tipoSugerencia);
-        sugerenciaRequest.setMensajeOriginal(mensajeOriginal);
-        sugerenciaRequest.setAlumnoId(this.alumnoService.getUserByDni(alumnoDni).getId());
-        return sugerenciaRequest;
-    }
-    @ParameterizedTest
-    @MethodSource("createAlumnoRequestWithData")
-    @Order(1)
-    public void createAlumnos(AlumnoRequest alumnoRequest){
-        this.alumnoService.save(alumnoRequest);
-    }
-
-    private Stream<Arguments> createAlumnoRequestWithData() {
-        return Stream.of(
-                Arguments.of(this.createAlumnoRequest("Chicho","Siesta","chicho@gmail.com",1111111)),
-                Arguments.of(this.createAlumnoRequest("Roman","Riquelme","roman@gmail.com",22222222)),
-                Arguments.of(this.createAlumnoRequest("Enzo","Perez","enzo@gmail.com",33333333))
-        );
-    }
-    private AlumnoRequest createAlumnoRequest(String nombre, String apellido, String email, Integer dni) {
-        AlumnoRequest alumnoRequest = new AlumnoRequest();
-        alumnoRequest.setNombre(nombre);
-        alumnoRequest.setApellido(apellido);
-        alumnoRequest.setEmail(email);
-        alumnoRequest.setDni(dni);
-        alumnoRequest.setFoto(null);
-        return alumnoRequest;
     }
 
 

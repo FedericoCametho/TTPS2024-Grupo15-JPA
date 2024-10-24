@@ -9,9 +9,11 @@ import org.example.ttps2024grupo15.dao.entitiManager.EMF;
 
 
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
+    private static final Logger LOGGER = Logger.getLogger(GenericDAOHibernateJPA.class.getName());
     protected Class<T> clasePersistente;
     public GenericDAOHibernateJPA(Class<T> clase) {
         clasePersistente = clase;
@@ -107,7 +109,7 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
         try {
             return em.createQuery("SELECT e FROM " + clasePersistente.getSimpleName() + " e ORDER BY e." + columnOrder, clasePersistente).getResultList();
         } catch(Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();
@@ -120,7 +122,7 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T> {
         try {
             return em.createQuery("SELECT e FROM " + clasePersistente.getSimpleName() + " e", clasePersistente).getResultList();
         } catch(Exception e) {
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();

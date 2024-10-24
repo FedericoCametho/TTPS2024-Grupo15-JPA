@@ -7,8 +7,10 @@ import org.example.ttps2024grupo15.dao.carta.producto.ProductoComercializableDAO
 import org.example.ttps2024grupo15.model.carta.producto.ProductoComercializable;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class ProductoComercializableDAOHibernateJPA <T extends ProductoComercializable> extends GenericDAOHibernateJPA<T> implements ProductoComercializableDAO<T> {
+    private static final Logger LOGGER = Logger.getLogger(ProductoComercializableDAOHibernateJPA.class.getName());
     public ProductoComercializableDAOHibernateJPA(Class<T> persistentClass) {
         super(persistentClass);
     }
@@ -19,7 +21,7 @@ public abstract class ProductoComercializableDAOHibernateJPA <T extends Producto
         try{
             return em.createQuery("SELECT p FROM "+ this.clasePersistente.getSimpleName() +" p WHERE p.nombre LIKE :nombre", this.clasePersistente).setParameter("nombre","%"+nombre+"%").getResultList();
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();
@@ -32,7 +34,7 @@ public abstract class ProductoComercializableDAOHibernateJPA <T extends Producto
         try{
             return em.createQuery("SELECT p FROM " + this.clasePersistente.getSimpleName() +" p WHERE p.precio = :precio", this.clasePersistente).setParameter("precio",precio).getResultList();
         }catch(Exception e){
-            e.printStackTrace();
+            LOGGER.severe(e.getMessage());
             throw e;
         } finally {
             em.close();

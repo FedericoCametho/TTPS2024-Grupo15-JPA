@@ -1,37 +1,28 @@
-package org.example.ttps2024grupo15.dao.usuario;
+package org.example.ttps2024grupo15.service.usuario;
 
-import org.example.ttps2024grupo15.dao.usuario.impl.AlumnoDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.permiso.Rol;
 import org.example.ttps2024grupo15.controller.request.usuario.AlumnoRequest;
 import org.example.ttps2024grupo15.model.usuario.Alumno;
-import org.example.ttps2024grupo15.service.usuario.AlumnoService;
+import org.example.ttps2024grupo15.service.AbstractGenericTest;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
+
 import org.junit.jupiter.params.provider.MethodSource;
 
+
 import java.util.List;
-import java.util.stream.Stream;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class AlumnoServiceTest {
-    private AlumnoDAOHibernateJPA alumnoDAO;
-    private AlumnoService alumnoService;
+public class AlumnoServiceTest extends AbstractGenericTest {
 
-    @BeforeAll
-    public void setUp(){
-        this.alumnoDAO = new AlumnoDAOHibernateJPA();
-        this.alumnoService = new AlumnoService(alumnoDAO);
-    }
-
-    @ParameterizedTest
-    @MethodSource("createAlumnoRequestWithData")
+    @Test
     @Order(1)
-    public void testCreateAlumnoTest(AlumnoRequest alumnoRequest) {
+    public void testCreateAlumnoTest() {
+        AlumnoRequest alumnoRequest = this.createAlumnoRequest("Mateo", "Retegol", "retegol@gmail.com", 777777);
         Alumno alumno = this.alumnoService.save(alumnoRequest);
         this.testQueryAndValidateAlumnoById(alumno.getId(), alumnoRequest);
     }
@@ -72,11 +63,11 @@ public class AlumnoServiceTest {
     public void massiveQueryByRol() {
         List<Alumno> alumnos = this.alumnoService.getAll();
         assertNotNull(alumnos);
-        assertEquals(3, alumnos.size());
+        assertEquals(4, alumnos.size());
 
         List<Alumno> alumnosPorRol = this.alumnoService.getUserByRol(Rol.ALUMNO);
         assertNotNull(alumnosPorRol);
-        assertEquals(3, alumnosPorRol.size());
+        assertEquals(4, alumnosPorRol.size());
     }
 
     @Test
@@ -94,7 +85,7 @@ public class AlumnoServiceTest {
     public void queryAlumnosByEnabled(){
         List<Alumno> alumnos = this.alumnoService.getAlumnosByEnabled();
         assertNotNull(alumnos);
-        assertEquals(2, alumnos.size());
+        assertEquals(3, alumnos.size());
     }
     @Test
     @Order(7)
@@ -107,18 +98,17 @@ public class AlumnoServiceTest {
     }
 
 
-
     @Test
     @Order(8)
     public void deleteAlumnoTest(){
         List<Alumno> alumnos = this.alumnoService.getAll();
         assertNotNull(alumnos);
-        assertEquals(3, alumnos.size());
+        assertEquals(4, alumnos.size());
         Alumno alumnoToDelete = alumnos.get(0);
         this.alumnoService.delete(alumnoToDelete.getId());
         alumnos = this.alumnoService.getAll();
         assertNotNull(alumnos);
-        assertEquals(2, alumnos.size());
+        assertEquals(3, alumnos.size());
     }
 
     @AfterAll
@@ -128,26 +118,6 @@ public class AlumnoServiceTest {
         alumnos = this.alumnoService.getAll();
         assertNotNull(alumnos);
         assertEquals(0, alumnos.size());
-    }
-
-
-
-    private Stream<Arguments> createAlumnoRequestWithData() {
-        return Stream.of(
-                Arguments.of(this.createAlumnoRequest("Chicho","Siesta","chicho@gmail.com",1111111)),
-                Arguments.of(this.createAlumnoRequest("Roman","Riquelme","roman@gmail.com",22222222)),
-                Arguments.of(this.createAlumnoRequest("Enzo","Perez","enzo@gmail.com",33333333))
-        );
-    }
-
-    private AlumnoRequest createAlumnoRequest(String nombre, String apellido, String email, Integer dni) {
-        AlumnoRequest alumnoRequest = new AlumnoRequest();
-        alumnoRequest.setNombre(nombre);
-        alumnoRequest.setApellido(apellido);
-        alumnoRequest.setEmail(email);
-        alumnoRequest.setDni(dni);
-        alumnoRequest.setFoto(null);
-        return alumnoRequest;
     }
 
 }

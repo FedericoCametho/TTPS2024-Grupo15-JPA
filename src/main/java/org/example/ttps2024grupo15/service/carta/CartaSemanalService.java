@@ -6,11 +6,14 @@ import org.example.ttps2024grupo15.dao.carta.cartaSemanal.CartaSemanalDAO;
 import org.example.ttps2024grupo15.model.carta.CartaDelDia;
 import org.example.ttps2024grupo15.model.carta.CartaSemanal;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
+
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import java.util.List;
 
 public class CartaSemanalService {
+    private static final Logger LOGGER = Logger.getLogger(CartaSemanalService.class.getName());
     private CartaSemanalDAO cartaSemanalDAO;
     private CartaDelDiaService cartaDelDiaService;
 
@@ -27,6 +30,7 @@ public class CartaSemanalService {
             this.updateCartasDelDiaRelation(cartaSemanalResult);
             return cartaSemanalResult;
         } catch (Exception e) {
+            LOGGER.info("Error al guardar la carta semanal");
             throw new IllegalArgumentException("Error al guardar la carta semanal");
         }
 
@@ -37,6 +41,7 @@ public class CartaSemanalService {
         try{
             return this.cartaSemanalDAO.getById(id);
         } catch (Exception e) {
+            LOGGER.info("No se encontro carta semanal con id: " + id);
             throw new IllegalArgumentException("No se encontro carta semanal con id: " + id);
         }
     }
@@ -60,6 +65,7 @@ public class CartaSemanalService {
     private void checkUnaPorDia(List<CartaDelDia> cartasDelDia) {
         cartasDelDia.stream().map(CartaDelDia::getDiaSemana).forEach(diaSemana -> {
             if (cartasDelDia.stream().filter(cartaDelDia -> cartaDelDia.getDiaSemana().equals(diaSemana)).count() > 1) {
+                LOGGER.info("ERROR: No se puede repetir carta del dia para el mismo dia");
                 throw new IllegalArgumentException("No se puede repetir carta del dia para el mismo dia");
             }
         });
@@ -83,6 +89,7 @@ public class CartaSemanalService {
         try{
             this.cartaSemanalDAO.delete(id);
         } catch (Exception e){
+            LOGGER.info("Error al eliminar carta semanal");
             throw new IllegalArgumentException("No se encontro carta semanal con id: " + id);
         }
     }
@@ -95,7 +102,7 @@ public class CartaSemanalService {
         try {
             cartaSemanalOriginal = this.getById(id);
         }catch (Exception e){
-            e.printStackTrace();
+            LOGGER.info("La carta semanal no existe");
             throw new IllegalArgumentException("La carta semanal no existe");
         }
         try{
@@ -105,6 +112,7 @@ public class CartaSemanalService {
             this.updateSpecificRelations(cartaSemanalOriginal, updateCartaSemanal, cartaSemanalRequest);
             return updateCartaSemanal;
         } catch (Exception e){
+            LOGGER.info("Error al actualizar carta semanal");
             throw new IllegalArgumentException("No se encontro carta semanal con id: " + id);
         }
 

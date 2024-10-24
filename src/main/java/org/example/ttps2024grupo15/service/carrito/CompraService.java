@@ -7,8 +7,10 @@ import org.example.ttps2024grupo15.model.carrito.Compra;
 import org.example.ttps2024grupo15.service.helper.RequestValidatorHelper;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class CompraService {
+    private static final Logger LOGGER = Logger.getLogger(CompraService.class.getName());
     private CompraDAO compraDAO;
 
     public CompraService(CompraDAO compraDAO) {
@@ -21,6 +23,7 @@ public class CompraService {
         try {
             return this.compraDAO.save(compra);
         } catch (Exception e) {
+            LOGGER.info("Error al guardar la compra");
             throw new IllegalArgumentException("Error al guardar la compra");
         }
     }
@@ -33,6 +36,7 @@ public class CompraService {
             compra.marcarPagado();
             this.compraDAO.update(compra);
         } catch (Exception e) {
+            LOGGER.info("Error al pagar la compra");
             throw new IllegalArgumentException("Error al pagar la compra");
         }
     }
@@ -45,6 +49,7 @@ public class CompraService {
             compra.marcarImpago();
             this.compraDAO.update(compra);
         } catch (Exception e) {
+            LOGGER.info("Error al marcar impago la compra");
             throw new IllegalArgumentException("Error al marcar impago la compra");
         }
     }
@@ -55,6 +60,7 @@ public class CompraService {
         try {
             this.compraDAO.delete(id);
         } catch (Exception e) {
+            LOGGER.info("Error al eliminar la compra");
             throw new IllegalArgumentException("Error al eliminar la compra");
         }
     }
@@ -64,6 +70,7 @@ public class CompraService {
         try {
             return this.compraDAO.getById(id);
         } catch (Exception e) {
+            LOGGER.info("No se encontro compra con id: " + id);
             throw new IllegalArgumentException("Error al recuperar la compra por ID");
         }
     }
@@ -73,6 +80,7 @@ public class CompraService {
         try {
             return this.compraDAO.getComprasByAlumno(alumnoId);
         } catch (Exception e) {
+            LOGGER.info("Error al recuperar las compras por alumno");
             throw new IllegalArgumentException("Error al recuperar las compras por alumno");
         }
     }
@@ -81,6 +89,7 @@ public class CompraService {
         try {
             return this.compraDAO.getAll();
         } catch (Exception e) {
+            LOGGER.info("Error al recuperar todas las compras");
             throw new IllegalArgumentException("Error al recuperar todas las compras");
         }
     }
@@ -89,6 +98,7 @@ public class CompraService {
         try{
             return this.compraDAO.getByPrecioMayorQue(precio);
         } catch(Exception e){
+            LOGGER.info("Error al recuperar las compras por filtrado mayor que");
             throw new IllegalArgumentException("Error al recuperar las compras por filtrado mayor que");
         }
     }
@@ -97,6 +107,7 @@ public class CompraService {
         try{
             return this.compraDAO.getByPrecioMenorQue(precio);
         } catch(Exception e){
+            LOGGER.info("Error al recuperar las compras por filtrado menor que");
             throw new IllegalArgumentException("Error al recuperar las compras por filtrado menor que");
         }
     }
