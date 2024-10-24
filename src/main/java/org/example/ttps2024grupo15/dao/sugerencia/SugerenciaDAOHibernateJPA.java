@@ -20,7 +20,7 @@ public class SugerenciaDAOHibernateJPA extends GenericDAOHibernateJPA<Sugerencia
         EntityManager entityManager = EMF.getEMF().createEntityManager();
 
         try {
-            return entityManager.createQuery("SELECT s FROM Sugerencia s WHERE s.tipo = :tipo", Sugerencia.class).setParameter("tipo", tipo).getResultList();
+            return entityManager.createQuery("SELECT s FROM Sugerencia s JOIN FETCH s.usuario WHERE s.tipo = :tipo", Sugerencia.class).setParameter("tipo", tipo).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -28,5 +28,19 @@ public class SugerenciaDAOHibernateJPA extends GenericDAOHibernateJPA<Sugerencia
             entityManager.close();
         }
 
+    }
+
+    @Override
+    public List<Sugerencia> getAll() {
+        EntityManager entityManager = EMF.getEMF().createEntityManager();
+
+        try {
+            return entityManager.createQuery("SELECT s FROM Sugerencia s JOIN FETCH s.usuario", Sugerencia.class).getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 }

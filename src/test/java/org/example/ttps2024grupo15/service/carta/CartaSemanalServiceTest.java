@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao.carta;
+package org.example.ttps2024grupo15.service.carta;
 
 import org.example.ttps2024grupo15.controller.request.carta.CartaDelDiaRequest;
 import org.example.ttps2024grupo15.controller.request.carta.CartaSemanalRequest;

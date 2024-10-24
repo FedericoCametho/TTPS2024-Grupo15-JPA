@@ -1,4 +1,4 @@
-package org.example.ttps2024grupo15.dao.usuario;
+package org.example.ttps2024grupo15.service.usuario;
 
 import org.example.ttps2024grupo15.dao.usuario.impl.AdministradorDAOHibernateJPA;
 import org.example.ttps2024grupo15.model.permiso.Rol;

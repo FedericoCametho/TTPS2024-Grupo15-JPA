@@ -1,10 +1,9 @@
-package org.example.ttps2024grupo15.dao.usuario;
+package org.example.ttps2024grupo15.service.usuario;
 
 import org.example.ttps2024grupo15.dao.usuario.impl.ResponsableDeTurnoDAOHibernateJPA;
 import org.example.ttps2024grupo15.controller.request.usuario.ResponsableDeTurnoRequest;
 import org.example.ttps2024grupo15.model.usuario.ResponsableDeTurno;
 import org.example.ttps2024grupo15.model.usuario.Turno;
-import org.example.ttps2024grupo15.service.usuario.ResponsableDeTurnoService;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ResponsableDeTurnoServiceTest {
     private ResponsableDeTurnoDAOHibernateJPA responsableDeTurnoDAO;
     private ResponsableDeTurnoService responsableDeTurnoService;
-
     @BeforeAll
     public void setUp(){
         this.responsableDeTurnoDAO = new ResponsableDeTurnoDAOHibernateJPA();
